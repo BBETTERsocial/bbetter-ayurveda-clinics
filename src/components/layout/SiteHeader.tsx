@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { site } from "@/lib/site";
 
@@ -35,6 +36,7 @@ function AppLink({
 
 /** Quiet brand mark — does not compete with hero type. */
 export function SiteHeader() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -44,6 +46,13 @@ export function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  /* Non-home pages: no splash — show full nav immediately */
+  useEffect(() => {
+    if (pathname !== "/") {
+      document.documentElement.dataset.intro = "nav";
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -75,7 +84,7 @@ export function SiteHeader() {
           href="/"
           onClick={closeMenu}
           id="site-nav-logo"
-          className="relative z-[1] shrink-0 justify-self-start transition-opacity duration-300"
+          className="relative z-[1] shrink-0 justify-self-start"
           aria-label={site.name}
         >
           <Image
@@ -90,7 +99,7 @@ export function SiteHeader() {
 
         <nav
           aria-label="Primary"
-          className="hidden items-center justify-center gap-5 lg:flex lg:gap-6 xl:gap-8"
+          className="site-nav-chrome hidden items-center justify-center gap-5 lg:flex lg:gap-6 xl:gap-8"
         >
           {site.nav.map((item) => (
             <AppLink
@@ -103,7 +112,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-3">
+        <div className="site-nav-chrome flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-3">
           <AppLink
             href="/#book"
             className="btn-press hidden h-11 items-center gap-2.5 rounded-full bg-[#1A3D2E] pl-5 pr-2 text-[11px] font-semibold tracking-[0.08em] text-[#EBE8E2] uppercase lg:inline-flex hover:bg-[#0B1F18]"
@@ -165,7 +174,7 @@ export function SiteHeader() {
       {menuOpen ? (
         <nav
           aria-label="Mobile"
-          className="pointer-events-auto mx-4 mt-1 max-h-[min(80svh,32rem)] overflow-y-auto rounded-2xl border border-[#1A3D2E]/10 bg-[#EBE8E2] px-5 pt-2 pb-5 shadow-lg lg:hidden"
+          className="site-nav-chrome pointer-events-auto mx-4 mt-1 max-h-[min(80svh,32rem)] overflow-y-auto rounded-2xl border border-[#1A3D2E]/10 bg-[#EBE8E2] px-5 pt-2 pb-5 shadow-lg lg:hidden"
         >
           <ul>
             {[

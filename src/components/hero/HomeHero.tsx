@@ -50,10 +50,11 @@ export function HomeHero() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setReduceMotion(reduce);
-    document.documentElement.dataset.intro = reduce ? "done" : "loading";
+    document.documentElement.dataset.intro = reduce ? "nav" : "loading";
 
     if (reduce) {
       setPhase("done");
+      document.documentElement.dataset.intro = "nav";
       return;
     }
 
@@ -61,12 +62,15 @@ export function HomeHero() {
     document.body.style.overflow = "hidden";
 
     const timers = [
-      /* logo in → spark → hold → dock to nav */
+      /* logo in → spark → hold → dock to nav → then reveal nav links */
       window.setTimeout(() => setPhase("dock"), 1600),
       window.setTimeout(() => {
-        document.documentElement.dataset.intro = "done";
+        document.documentElement.dataset.intro = "logo";
         setPhase("zoom");
       }, 2400),
+      window.setTimeout(() => {
+        document.documentElement.dataset.intro = "nav";
+      }, 2750),
       window.setTimeout(() => setPhase("mark"), 2800),
       window.setTimeout(() => setPhase("settle"), 3300),
       window.setTimeout(() => setPhase("text"), 3650),
@@ -89,7 +93,7 @@ export function HomeHero() {
     const el = dockRef.current;
     const nav = document.getElementById("site-nav-logo");
     if (!el || !nav) {
-      document.documentElement.dataset.intro = "done";
+      document.documentElement.dataset.intro = "nav";
       return;
     }
 
@@ -110,14 +114,16 @@ export function HomeHero() {
 
   const introDone = phase === "done" || reduceMotion;
 
-  /* Scroll depart: upper ← / lower → / mortar back / meta fade */
+  /* Scroll depart — wait until meta has faded in (is-ready kills transitions) */
   useEffect(() => {
     if (!introDone || reduceMotion) return;
     const el = sectionRef.current;
     if (!el) return;
 
-    el.classList.add("is-ready");
     let ticking = false;
+    const readyTimer = window.setTimeout(() => {
+      el.classList.add("is-ready");
+    }, 2600);
 
     const update = () => {
       ticking = false;
@@ -137,6 +143,7 @@ export function HomeHero() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
     return () => {
+      window.clearTimeout(readyTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       el.classList.remove("is-ready");
@@ -149,7 +156,8 @@ export function HomeHero() {
     phase === "loader" || phase === "dock" ? "hero-grid is-pre" : "hero-grid is-zoomed";
   const showMortar = ["mark", "settle", "text", "done"].includes(phase);
   const showType = ["text", "done"].includes(phase) || reduceMotion;
-  const showMeta = phase === "done" || reduceMotion;
+  /* Soft details after main type — long fade, not a snap */
+  const showMeta = ["text", "done"].includes(phase) || reduceMotion;
   const loaderLeaving = phase === "dock";
 
   return (
