@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { AyurvedaMark } from "@/components/brand/AyurvedaMark";
 
-type Phase = "loader" | "zoom" | "mark" | "settle" | "text" | "done";
+type Phase = "loader" | "dock" | "zoom" | "mark" | "settle" | "text" | "done";
 
 const SIDE_LABELS = [
   {
@@ -44,12 +43,14 @@ const SIDE_LABELS = [
  */
 export function HomeHero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>("loader");
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setReduceMotion(reduce);
+    document.documentElement.dataset.intro = reduce ? "done" : "loading";
 
     if (reduce) {
       setPhase("done");
@@ -60,21 +61,52 @@ export function HomeHero() {
     document.body.style.overflow = "hidden";
 
     const timers = [
-      window.setTimeout(() => setPhase("zoom"), 750),
-      window.setTimeout(() => setPhase("mark"), 1250),
-      window.setTimeout(() => setPhase("settle"), 1850),
-      window.setTimeout(() => setPhase("text"), 2200),
+      /* logo in → spark → hold → dock to nav */
+      window.setTimeout(() => setPhase("dock"), 1600),
+      window.setTimeout(() => {
+        document.documentElement.dataset.intro = "done";
+        setPhase("zoom");
+      }, 2400),
+      window.setTimeout(() => setPhase("mark"), 2800),
+      window.setTimeout(() => setPhase("settle"), 3300),
+      window.setTimeout(() => setPhase("text"), 3650),
       window.setTimeout(() => {
         setPhase("done");
         document.body.style.overflow = prev;
-      }, 3100),
+      }, 4500),
     ];
 
     return () => {
       timers.forEach(clearTimeout);
       document.body.style.overflow = prev;
+      delete document.documentElement.dataset.intro;
     };
   }, []);
+
+  /* FLIP: splash logo → navbar logo slot */
+  useEffect(() => {
+    if (phase !== "dock" || reduceMotion) return;
+    const el = dockRef.current;
+    const nav = document.getElementById("site-nav-logo");
+    if (!el || !nav) {
+      document.documentElement.dataset.intro = "done";
+      return;
+    }
+
+    const from = el.getBoundingClientRect();
+    const to = nav.getBoundingClientRect();
+    const fromCx = from.left + from.width / 2;
+    const fromCy = from.top + from.height / 2;
+    const toCx = to.left + to.width / 2;
+    const toCy = to.top + to.height / 2;
+    const scale = Math.min(to.width / Math.max(from.width, 1), to.height / Math.max(from.height, 1));
+
+    el.style.setProperty("--dock-x", `${toCx - fromCx}px`);
+    el.style.setProperty("--dock-y", `${toCy - fromCy}px`);
+    el.style.setProperty("--dock-s", String(Math.max(0.18, scale)));
+    el.classList.add("is-docking");
+    document.documentElement.dataset.intro = "docking";
+  }, [phase, reduceMotion]);
 
   const introDone = phase === "done" || reduceMotion;
 
@@ -112,12 +144,13 @@ export function HomeHero() {
     };
   }, [introDone, reduceMotion]);
 
-  const showLoader = phase === "loader";
+  const showLoader = phase === "loader" || phase === "dock";
   const gridZoom =
-    phase === "loader" ? "hero-grid is-pre" : "hero-grid is-zoomed";
+    phase === "loader" || phase === "dock" ? "hero-grid is-pre" : "hero-grid is-zoomed";
   const showMortar = ["mark", "settle", "text", "done"].includes(phase);
   const showType = ["text", "done"].includes(phase) || reduceMotion;
   const showMeta = phase === "done" || reduceMotion;
+  const loaderLeaving = phase === "dock";
 
   return (
     <section
@@ -132,15 +165,32 @@ export function HomeHero() {
 
       <div
         className={[
-          "intro-loader absolute inset-0 z-40 flex flex-col items-center justify-center bg-[#EBE8E2]",
+          "intro-loader absolute inset-0 z-40",
           showLoader ? "is-on" : "is-off",
+          loaderLeaving ? "is-leaving" : "",
+          phase === "dock" ? "is-dock" : "",
         ].join(" ")}
         aria-hidden={!showLoader}
       >
-        <AyurvedaMark className="intro-loader__mark h-14 w-14 text-[#006B56] sm:h-16 sm:w-16" />
-        <p className="font-display mt-5 text-sm font-semibold tracking-[0.35em] text-[#006B56] uppercase">
-          BBETTER
-        </p>
+        <div className="intro-loader__studio" aria-hidden />
+        <div className="intro-loader__orbit" aria-hidden>
+          <span className="intro-loader__ring intro-loader__ring--a" />
+          <span className="intro-loader__ring intro-loader__ring--b" />
+          <span className="intro-loader__glow" />
+        </div>
+        <div ref={dockRef} className="intro-loader__dock">
+          <div className="intro-loader__wordmark">
+            <Image
+              src="/images/brand/bbetter-logo.png"
+              alt=""
+              width={621}
+              height={150}
+              priority
+              className="intro-loader__logo"
+            />
+          </div>
+          <span className="intro-loader__spark" aria-hidden />
+        </div>
       </div>
 
       <div

@@ -74,7 +74,8 @@ export function SiteHeader() {
         <Link
           href="/"
           onClick={closeMenu}
-          className="relative z-[1] shrink-0 justify-self-start"
+          id="site-nav-logo"
+          className="relative z-[1] shrink-0 justify-self-start transition-opacity duration-300"
           aria-label={site.name}
         >
           <Image
