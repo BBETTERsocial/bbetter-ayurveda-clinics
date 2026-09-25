@@ -2,8 +2,36 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { site } from "@/lib/site";
+
+/** Hash anchors must be plain <a> — Next Link doubles #our-story#our-story. */
+function AppLink({
+  href,
+  className,
+  onClick,
+  children,
+  ...rest
+}: {
+  href: string;
+  className?: string;
+  onClick?: () => void;
+  children: ReactNode;
+  "aria-label"?: string;
+}) {
+  if (href.includes("#")) {
+    return (
+      <a href={href} className={className} onClick={onClick} {...rest}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={className} onClick={onClick} {...rest}>
+      {children}
+    </Link>
+  );
+}
 
 /** Quiet brand mark — does not compete with hero type. */
 export function SiteHeader() {
@@ -37,7 +65,6 @@ export function SiteHeader() {
           : "bg-transparent",
       ].join(" ")}
     >
-      {/* Invisible clearance line — keeps page content below the nav band */}
       <div
         className={[
           "pointer-events-auto mx-auto grid h-14 w-full max-w-[92rem] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:h-16 sm:gap-3 sm:px-6 lg:px-10",
@@ -65,18 +92,18 @@ export function SiteHeader() {
           className="hidden items-center justify-center gap-5 lg:flex lg:gap-6 xl:gap-8"
         >
           {site.nav.map((item) => (
-            <Link
+            <AppLink
               key={item.href}
               href={item.href}
               className="font-display text-[0.8rem] tracking-[0.04em] text-[#1A1A1A]/70 transition-colors hover:text-[#006B56]"
             >
               {item.label}
-            </Link>
+            </AppLink>
           ))}
         </nav>
 
         <div className="flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-3">
-          <Link
+          <AppLink
             href="/#book"
             className="btn-press hidden h-11 items-center gap-2.5 rounded-full bg-[#1A3D2E] pl-5 pr-2 text-[11px] font-semibold tracking-[0.08em] text-[#EBE8E2] uppercase lg:inline-flex hover:bg-[#0B1F18]"
           >
@@ -95,15 +122,15 @@ export function SiteHeader() {
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </span>
-          </Link>
+          </AppLink>
 
-          <Link
+          <AppLink
             href="/#book"
             onClick={closeMenu}
             className="btn-press inline-flex h-8 items-center rounded-full bg-[#1A3D2E] px-3 text-[9px] font-semibold tracking-[0.1em] text-[#EBE8E2] uppercase lg:hidden"
           >
             Book
-          </Link>
+          </AppLink>
 
           <button
             type="button"
@@ -145,17 +172,17 @@ export function SiteHeader() {
               { href: "/#faq", label: "FAQ" },
             ].map((item) => (
               <li key={item.href}>
-                <Link
+                <AppLink
                   href={item.href}
                   onClick={closeMenu}
                   className="block border-b border-[#1A3D2E]/8 py-3.5 text-[13px] font-semibold tracking-[0.14em] text-[#1A1A1A] uppercase"
                 >
                   {item.label}
-                </Link>
+                </AppLink>
               </li>
             ))}
           </ul>
-          <Link
+          <AppLink
             href="/#book"
             onClick={closeMenu}
             className="btn-press mt-4 inline-flex h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#1A3D2E] text-[11px] font-semibold tracking-[0.1em] text-[#EBE8E2] uppercase"
@@ -175,7 +202,7 @@ export function SiteHeader() {
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </span>
-          </Link>
+          </AppLink>
           <div className="mt-3 flex gap-3">
             <a
               href={site.phoneHref}

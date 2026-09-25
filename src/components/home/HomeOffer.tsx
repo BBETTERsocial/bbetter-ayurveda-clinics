@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FadeUp } from "@/components/ui/FadeUp";
 import { ScrollStack, ScrollStackItem } from "@/components/ui/ScrollStack";
@@ -32,7 +31,7 @@ function TherapyCard({
     therapy.name.toLowerCase().replace(/\s+/g, "-");
 
   return (
-    <Link
+    <a
       href="/#book"
       id={`therapy-${slug}`}
       className="therapies-svc__card group relative block overflow-hidden"
@@ -69,7 +68,7 @@ function TherapyCard({
           </svg>
         </span>
       </div>
-    </Link>
+    </a>
   );
 }
 
@@ -118,13 +117,13 @@ export function HomeOffer() {
                 guided by MD Ayurvedic doctors at our Hyderabad clinics.
               </p>
               <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
-                <Link
+                <a
                   href="/#book"
                   className="therapies-svc__cta inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0B1F18] transition-colors hover:text-[#006B56]"
                 >
                   Book a Consultation
                   <span aria-hidden>›</span>
-                </Link>
+                </a>
                 <a
                   href={site.phoneHref}
                   className="therapies-svc__cta inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0B1F18] transition-colors hover:text-[#006B56]"

@@ -28,7 +28,11 @@ export function SiteFooter() {
             <ul className="foot-mic__links">
               {explore.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  {item.href.includes("#") ? (
+                    <a href={item.href}>{item.label}</a>
+                  ) : (
+                    <Link href={item.href}>{item.label}</Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -39,7 +43,7 @@ export function SiteFooter() {
             <ul className="foot-mic__links">
               {visit.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <a href={item.href}>{item.label}</a>
                 </li>
               ))}
             </ul>
@@ -59,10 +63,10 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <Link href="/#book" className="foot-mic__cta-link">
+                <a href="/#book" className="foot-mic__cta-link">
                   Book a consultation
                   <span aria-hidden>→</span>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -117,15 +121,15 @@ export function SiteFooter() {
             <span className="mx-1.5 text-black/20" aria-hidden>
               ·
             </span>
-            <Link href="/#faq" className="hover:text-[#0B1F18]">
+            <a href="/#faq" className="hover:text-[#0B1F18]">
               Privacy
-            </Link>
+            </a>
             <span className="mx-1.5 text-black/20" aria-hidden>
               ·
             </span>
-            <Link href="/#faq" className="hover:text-[#0B1F18]">
+            <a href="/#faq" className="hover:text-[#0B1F18]">
               Terms
-            </Link>
+            </a>
           </p>
         </div>
       </div>

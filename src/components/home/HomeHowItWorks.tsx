@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/lib/site";
 
@@ -215,7 +214,7 @@ export function HomeHowItWorks() {
           </div>
 
           <div className="mt-3 flex shrink-0 flex-wrap items-center justify-center gap-4 sm:mt-4">
-            <Link
+            <a
               href="/#book"
               className="btn-press inline-flex h-10 items-center gap-2 rounded-full bg-[#0B1F18] pl-5 pr-2 text-[10px] font-bold tracking-[0.12em] text-[#EBE8E2] uppercase hover:bg-[#1A3D2E]"
             >
@@ -231,7 +230,7 @@ export function HomeHowItWorks() {
                   />
                 </svg>
               </span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>
