@@ -62,7 +62,7 @@ export function HomeHero() {
     document.body.style.overflow = "hidden";
 
     const timers = [
-      /* logo in → spark → hold → dock to nav → then reveal nav links */
+      /* logo in → spark → travel path into navbar → hero + nav */
       window.setTimeout(() => setPhase("dock"), 1600),
       window.setTimeout(() => {
         document.documentElement.dataset.intro = "logo";
@@ -87,7 +87,7 @@ export function HomeHero() {
     };
   }, []);
 
-  /* FLIP: splash logo → navbar logo slot */
+  /* FLIP: splash logo travels into navbar logo slot */
   useEffect(() => {
     if (phase !== "dock" || reduceMotion) return;
     const el = dockRef.current;
@@ -166,6 +166,7 @@ export function HomeHero() {
   return (
     <section
       ref={sectionRef}
+      id="top"
       className="hero-mic relative isolate overflow-hidden bg-[#EBE8E2] text-[#006B56]"
       style={{ ["--hero-p" as string]: 0 }}
     >

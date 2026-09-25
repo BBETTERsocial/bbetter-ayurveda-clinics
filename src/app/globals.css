@@ -342,7 +342,7 @@
   }
 }
 
-/* ── Intro splash: logo first → spark → dock into navbar ── */
+/* ── Intro splash: logo first → spark → travels into navbar ── */
 .intro-loader {
   display: grid;
   place-items: center;

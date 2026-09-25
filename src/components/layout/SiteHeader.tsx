@@ -80,9 +80,15 @@ export function SiteHeader() {
           scrolled ? "border-b border-transparent" : "",
         ].join(" ")}
       >
-        <Link
-          href="/"
-          onClick={closeMenu}
+        <a
+          href="/#top"
+          onClick={(e) => {
+            closeMenu();
+            if (pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           id="site-nav-logo"
           className="relative z-[1] shrink-0 justify-self-start"
           aria-label={site.name}
@@ -95,7 +101,7 @@ export function SiteHeader() {
             priority
             className="h-8 w-auto max-w-none object-contain sm:h-9 lg:h-10"
           />
-        </Link>
+        </a>
 
         <nav
           aria-label="Primary"
