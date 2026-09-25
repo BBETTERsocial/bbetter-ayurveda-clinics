@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FadeUp } from "@/components/ui/FadeUp";
 import { ScrollStack, ScrollStackItem } from "@/components/ui/ScrollStack";
 import { site } from "@/lib/site";
@@ -43,7 +43,7 @@ function TherapyCard({
             src={therapy.image}
             alt={therapy.name}
             fill
-            sizes="(max-width: 1279px) 85vw, 50vw"
+            sizes="(max-width: 1279px) 100vw, 50vw"
             className="therapies-svc__img object-cover"
           />
         ) : (
@@ -73,86 +73,9 @@ function TherapyCard({
 }
 
 /**
- * Mobile / tablet: vertical page scroll drives cards left → right.
- * New therapies enter from the left and exit to the right.
- */
-function TherapiesHorizontalRail() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      track.style.transform = "none";
-      return;
-    }
-
-    let raf = 0;
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const sticky = section.querySelector(
-        ".therapies-rail__sticky"
-      ) as HTMLElement | null;
-      if (!sticky) return;
-
-      const maxShift = Math.max(0, track.scrollWidth - sticky.clientWidth);
-      const rect = section.getBoundingClientRect();
-      const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
-      const scrolled = Math.min(scrollable, Math.max(0, -rect.top));
-      const progress = scrolled / scrollable;
-      /* progress 0 → furthest left; scroll down → slide right */
-      const x = -maxShift + progress * maxShift;
-      track.style.transform = `translate3d(${Math.round(x)}px, 0, 0)`;
-    };
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  /* Reversed so first therapy leads; as strip moves right, next enter from left */
-  const railTherapies = [...site.therapies].reverse();
-
-  return (
-    <div
-      ref={sectionRef}
-      className="therapies-rail"
-      style={{ ["--therapies-count" as string]: site.therapies.length }}
-    >
-      <div className="therapies-rail__sticky">
-        <div ref={trackRef} className="therapies-rail__track">
-          {railTherapies.map((therapy) => (
-            <div key={therapy.name} className="therapies-rail__item">
-              <div className="therapies-svc__layer">
-                <TherapyCard therapy={therapy} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Therapies — scroll stack on desktop;
- * mobile + iPad: horizontal rail scrubbed by vertical scroll.
+ * Therapies — scroll stack:
+ * mobile + iPad: 1 card per layer (no blur / no vibration)
+ * desktop (xl+): 2 cards per layer × 3 layers
  */
 export function HomeOffer() {
   const [dualStack, setDualStack] = useState(false);
@@ -168,7 +91,7 @@ export function HomeOffer() {
   return (
     <section
       id="therapies"
-      className="therapies-svc relative isolate bg-[#F7F1E6] xl:overflow-x-clip"
+      className="therapies-svc relative isolate overflow-x-clip bg-[#F7F1E6]"
       aria-labelledby="offer-heading"
     >
       <div className="mx-auto max-w-7xl px-5 pt-14 sm:px-8 sm:pt-16 lg:px-10 lg:pt-20 xl:max-w-[88rem]">
@@ -238,7 +161,24 @@ export function HomeOffer() {
           </ScrollStack>
         </div>
       ) : (
-        <TherapiesHorizontalRail />
+        <div className="mx-auto mt-10 max-w-xl px-5 pb-16 sm:mt-12 sm:px-8 md:max-w-2xl">
+          <ScrollStack
+            className="therapies-svc__stack therapies-svc__stack--single"
+            itemDistance={88}
+            itemStackDistance={24}
+            stackPosition="20%"
+            scaleEndPosition="12%"
+            baseScale={0.92}
+            itemScale={0.015}
+            blurAmount={0}
+          >
+            {site.therapies.map((therapy) => (
+              <ScrollStackItem key={therapy.name} itemClassName="therapies-svc__layer">
+                <TherapyCard therapy={therapy} />
+              </ScrollStackItem>
+            ))}
+          </ScrollStack>
+        </div>
       )}
     </section>
   );

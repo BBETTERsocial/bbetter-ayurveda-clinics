@@ -2399,94 +2399,6 @@ html[data-intro="done"] .site-nav-chrome {
   }
 }
 
-/* Mobile therapies: vertical scroll scrubs a horizontal rail (L → R) */
-.therapies-rail {
-  --therapies-count: 6;
-  position: relative;
-  height: calc(100svh + (var(--therapies-count) - 1) * 58svh);
-  margin-top: 1.5rem;
-}
-
-.therapies-rail__sticky {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  height: 100svh;
-  max-height: 100dvh;
-  overflow: hidden;
-  padding-inline: 1.25rem;
-  box-sizing: border-box;
-}
-
-.therapies-rail__track {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.85rem;
-  width: max-content;
-  will-change: transform;
-  transform: translate3d(0, 0, 0);
-}
-
-.therapies-rail__item {
-  flex: 0 0 auto;
-  width: min(82vw, 22rem);
-}
-
-.therapies-rail__item .therapies-svc__card {
-  height: min(22rem, 62vw);
-}
-
-@media (min-width: 640px) {
-  .therapies-rail__sticky {
-    padding-inline: 2rem;
-  }
-  .therapies-rail__track {
-    gap: 1.1rem;
-  }
-  .therapies-rail__item {
-    width: min(70vw, 26rem);
-  }
-  .therapies-rail__item .therapies-svc__card {
-    height: 24rem;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1279px) {
-  .therapies-rail__item {
-    width: min(52vw, 28rem);
-  }
-  .therapies-rail__item .therapies-svc__card {
-    height: 26rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .therapies-rail {
-    height: auto;
-    margin-top: 2rem;
-    margin-bottom: 2.5rem;
-  }
-  .therapies-rail__sticky {
-    position: relative;
-    height: auto;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding-block: 0.5rem;
-  }
-  .therapies-rail__track {
-    transform: none !important;
-    padding-inline: 0.15rem;
-  }
-  .therapies-rail__item {
-    scroll-snap-align: center;
-  }
-}
-
 /* Scroll stack layers */
 .scroll-stack-inner {
   padding: 2rem 0 40vh;
@@ -2497,10 +2409,18 @@ html[data-intro="done"] .site-nav-chrome {
   position: relative;
   width: 100%;
   transform-origin: top center;
-  will-change: transform, filter;
+  will-change: transform;
   backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
   transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+@media (pointer: coarse) {
+  .therapies-svc__stack--single .scroll-stack-card {
+    /* Kill subpixel shimmer on touch */
+    filter: none !important;
+  }
 }
 
 .scroll-stack-end {

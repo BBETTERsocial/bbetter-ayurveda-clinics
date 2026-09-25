@@ -29,7 +29,7 @@ type ScrollStackProps = {
 
 /**
  * Window-scroll card stack (React Bits–style).
- * Reads page scroll so it works with the existing Lenis instance.
+ * Coarse pointers: integer px, no blur, scroll-driven updates only (no vibration).
  */
 export function ScrollStack({
   children,
@@ -47,10 +47,12 @@ export function ScrollStack({
   const cardsRef = useRef<HTMLElement[]>([]);
   const cardTopsRef = useRef<number[]>([]);
   const endTopRef = useRef(0);
+  const coarseRef = useRef(false);
   const lastTransformsRef = useRef(
     new Map<number, { translateY: number; scale: number; rotation: number; blur: number }>()
   );
   const rafRef = useRef(0);
+  const loopRef = useRef(0);
   const isUpdatingRef = useRef(false);
 
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
@@ -96,6 +98,7 @@ export function ScrollStack({
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
     const endElementTop = endTopRef.current;
+    const coarse = coarseRef.current;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
@@ -111,11 +114,9 @@ export function ScrollStack({
       const scale = 1 - scaleProgress * (1 - targetScale);
       const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
 
-      /* Blur filter shimmer = mobile stack vibration — desktop only */
-      const allowBlur =
-        blurAmount > 0 && window.matchMedia("(pointer: fine)").matches;
+      /* Blur shimmer vibrates on mobile — fine pointer only */
       let blur = 0;
-      if (allowBlur) {
+      if (!coarse && blurAmount > 0) {
         let topCardIndex = 0;
         for (let j = 0; j < cardsRef.current.length; j++) {
           const jCardTop = cardTopsRef.current[j] ?? 0;
@@ -135,10 +136,9 @@ export function ScrollStack({
         translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
       }
 
-      const coarse = window.matchMedia("(pointer: coarse)").matches;
       const newTransform = {
         translateY: coarse ? Math.round(translateY) : Math.round(translateY * 100) / 100,
-        scale: Math.round(scale * 1000) / 1000,
+        scale: coarse ? Math.round(scale * 100) / 100 : Math.round(scale * 1000) / 1000,
         rotation: Math.round(rotation * 100) / 100,
         blur: Math.round(blur * 100) / 100,
       };
@@ -146,8 +146,8 @@ export function ScrollStack({
       const last = lastTransformsRef.current.get(i);
       const changed =
         !last ||
-        Math.abs(last.translateY - newTransform.translateY) > (coarse ? 0.5 : 0.1) ||
-        Math.abs(last.scale - newTransform.scale) > 0.001 ||
+        Math.abs(last.translateY - newTransform.translateY) > (coarse ? 0.75 : 0.1) ||
+        Math.abs(last.scale - newTransform.scale) > (coarse ? 0.01 : 0.001) ||
         Math.abs(last.rotation - newTransform.rotation) > 0.1 ||
         Math.abs(last.blur - newTransform.blur) > 0.1;
 
@@ -175,6 +175,8 @@ export function ScrollStack({
     const root = scrollerRef.current;
     if (!root) return;
 
+    coarseRef.current = window.matchMedia("(pointer: coarse)").matches;
+
     const cards = Array.from(root.querySelectorAll(".scroll-stack-card")) as HTMLElement[];
     cardsRef.current = cards;
 
@@ -182,27 +184,42 @@ export function ScrollStack({
       if (i < cards.length - 1) {
         card.style.marginBottom = `${itemDistance}px`;
       }
-      card.style.willChange = "transform, filter";
+      card.style.willChange = coarseRef.current ? "transform" : "transform, filter";
       card.style.transformOrigin = "top center";
       card.style.backfaceVisibility = "hidden";
     });
 
     measure();
+    updateCardTransforms();
 
-    const tick = () => {
-      updateCardTransforms();
-      rafRef.current = requestAnimationFrame(tick);
+    const onScrollOrResize = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        updateCardTransforms();
+      });
     };
-    rafRef.current = requestAnimationFrame(tick);
 
     const onResize = () => {
       measure();
       updateCardTransforms();
     };
-    window.addEventListener("resize", onResize);
+
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+
+    /* Desktop: keep a light rAF so Lenis-smooth scroll stays in sync */
+    if (!coarseRef.current) {
+      const tick = () => {
+        updateCardTransforms();
+        loopRef.current = requestAnimationFrame(tick);
+      };
+      loopRef.current = requestAnimationFrame(tick);
+    }
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(loopRef.current);
+      window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onResize);
       cardsRef.current = [];
       lastTransformsRef.current.clear();
