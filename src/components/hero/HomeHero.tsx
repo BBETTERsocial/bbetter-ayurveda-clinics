@@ -114,7 +114,7 @@ export function HomeHero() {
 
   const introDone = phase === "done" || reduceMotion;
 
-  /* Scroll depart — wait until meta has faded in (is-ready kills transitions) */
+  /* Scroll depart — only after soft details finish fading in */
   useEffect(() => {
     if (!introDone || reduceMotion) return;
     const el = sectionRef.current;
@@ -123,7 +123,7 @@ export function HomeHero() {
     let ticking = false;
     const readyTimer = window.setTimeout(() => {
       el.classList.add("is-ready");
-    }, 2600);
+    }, 2800);
 
     const update = () => {
       ticking = false;
@@ -131,6 +131,8 @@ export function HomeHero() {
       const range = Math.max(window.innerHeight * 0.7, el.offsetHeight * 0.65);
       const p = Math.min(1, Math.max(0, -rect.top / range));
       el.style.setProperty("--hero-p", p.toFixed(4));
+      /* Don't force opacity until scroll — otherwise intro fades get snapped */
+      el.classList.toggle("is-leaving", p > 0.002);
     };
 
     const onScroll = () => {
@@ -146,7 +148,7 @@ export function HomeHero() {
       window.clearTimeout(readyTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      el.classList.remove("is-ready");
+      el.classList.remove("is-ready", "is-leaving");
       el.style.removeProperty("--hero-p");
     };
   }, [introDone, reduceMotion]);
@@ -156,8 +158,9 @@ export function HomeHero() {
     phase === "loader" || phase === "dock" ? "hero-grid is-pre" : "hero-grid is-zoomed";
   const showMortar = ["mark", "settle", "text", "done"].includes(phase);
   const showType = ["text", "done"].includes(phase) || reduceMotion;
-  /* Soft details after main type — long fade, not a snap */
+  /* Soft chrome after title; flank notes wait for settle then ease in alone */
   const showMeta = ["text", "done"].includes(phase) || reduceMotion;
+  const showNotes = phase === "done" || reduceMotion;
   const loaderLeaving = phase === "dock";
 
   return (
@@ -278,7 +281,7 @@ export function HomeHero() {
           <div
             className={[
               "hero-mic__notes",
-              showMeta ? "is-in" : "is-out",
+              showNotes ? "is-in" : "is-out",
             ].join(" ")}
             aria-hidden
           >

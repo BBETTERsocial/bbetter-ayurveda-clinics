@@ -727,21 +727,22 @@ html[data-intro="done"] .site-nav-chrome {
   --hero-p: 0;
 }
 
-/* Scroll depart (after intro): type parts, mortar recedes, meta fades */
+/* Scroll depart (after intro): type parts, mortar recedes, meta fades.
+   is-leaving only while scrolled — keeps intro opacity animations alive. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero-mic.is-ready .hero-mic__title-line.is-in {
+  .hero-mic.is-ready.is-leaving .hero-mic__title-line.is-in {
     transition: none;
     will-change: transform, opacity;
   }
-  .hero-mic.is-ready .hero-mic__title-line--1.is-in {
+  .hero-mic.is-ready.is-leaving .hero-mic__title-line--1.is-in {
     transform: translate3d(calc(var(--hero-p) * -42vw), calc(var(--hero-p) * -6vh), 0);
     opacity: calc(1 - var(--hero-p) * 0.55);
   }
-  .hero-mic.is-ready .hero-mic__title-line--2.is-in {
+  .hero-mic.is-ready.is-leaving .hero-mic__title-line--2.is-in {
     transform: translate3d(calc(var(--hero-p) * 42vw), calc(var(--hero-p) * 4vh), 0);
     opacity: calc(0.94 - var(--hero-p) * 0.55);
   }
-  .hero-mic.is-ready .hero-mic__object.is-visible.is-landed {
+  .hero-mic.is-ready.is-leaving .hero-mic__object.is-visible.is-landed {
     transition: none;
     will-change: transform, opacity, filter;
     z-index: 4;
@@ -751,16 +752,22 @@ html[data-intro="done"] .site-nav-chrome {
     filter: blur(calc(var(--hero-p) * 8px))
       drop-shadow(0 10px 18px rgba(26, 26, 26, calc(0.14 * (1 - var(--hero-p)))));
   }
-  .hero-mic.is-ready .hero-mic__eyebrow.is-in,
-  .hero-mic.is-ready .hero-mic__notes.is-in,
-  .hero-mic.is-ready .hero-mic__sides.is-in,
-  .hero-mic.is-ready .hero-mic__credit.is-in,
-  .hero-mic.is-ready .hero-mic__botanicals.is-in {
+  .hero-mic.is-ready.is-leaving .hero-mic__eyebrow.is-in,
+  .hero-mic.is-ready.is-leaving .hero-mic__notes.is-in,
+  .hero-mic.is-ready.is-leaving .hero-mic__sides.is-in,
+  .hero-mic.is-ready.is-leaving .hero-mic__credit.is-in,
+  .hero-mic.is-ready.is-leaving .hero-mic__botanicals.is-in {
     transition: none;
+    animation: none;
     opacity: calc(1 - var(--hero-p) * 1.35);
     transform: translate3d(0, calc(var(--hero-p) * -12px), 0);
   }
-  .hero-mic.is-ready .hero-mic__scroll {
+  .hero-mic.is-ready.is-leaving .hero-mic__notes.is-in .hero-mic__anno {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-mic.is-ready.is-leaving .hero-mic__scroll {
     opacity: calc(0.28 * (1 - var(--hero-p) * 1.5));
   }
 }
@@ -944,7 +951,17 @@ html[data-intro="done"] .site-nav-chrome {
   filter: drop-shadow(0 14px 22px rgba(26, 26, 26, 0.16));
 }
 
-/* Handwritten flank notes — above mortar, like the mock */
+/* Handwritten flank notes — slow ease after main title settles */
+@keyframes hero-anno-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
 .hero-mic__notes {
   display: block;
   position: absolute;
@@ -954,18 +971,19 @@ html[data-intro="done"] .site-nav-chrome {
   padding: 0;
   pointer-events: none;
   color: rgba(40, 36, 30, 0.4);
-  transition:
-    opacity 1.55s var(--ease-out-soft),
-    transform 1.55s var(--ease-out-soft);
 }
-.hero-mic__notes.is-out {
+.hero-mic__notes.is-out .hero-mic__anno {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
+  transform: translate3d(0, 18px, 0);
 }
-.hero-mic__notes.is-in {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition-delay: 0.28s;
+.hero-mic__notes.is-in .hero-mic__anno {
+  animation: hero-anno-in 2.2s var(--ease-out-soft) forwards;
+}
+.hero-mic__notes.is-in .hero-mic__anno--tl {
+  animation-delay: 0.15s;
+}
+.hero-mic__notes.is-in .hero-mic__anno--tr {
+  animation-delay: 0.55s;
 }
 .hero-mic__anno {
   position: absolute;
@@ -975,6 +993,7 @@ html[data-intro="done"] .site-nav-chrome {
   gap: 0.15rem;
   width: max-content;
   max-width: 32%;
+  will-change: opacity, transform;
 }
 .hero-mic__anno--tl {
   left: -0.15rem;
@@ -1417,15 +1436,15 @@ html[data-intro="done"] .site-nav-chrome {
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .hero-mic.is-ready .hero-mic__title-line--1.is-in {
+    .hero-mic.is-ready.is-leaving .hero-mic__title-line--1.is-in {
       transform: translate3d(calc(var(--hero-p) * -38vw), calc(var(--hero-p) * -4vh), 0);
       opacity: calc(1 - var(--hero-p) * 0.45);
     }
-    .hero-mic.is-ready .hero-mic__title-line--2.is-in {
+    .hero-mic.is-ready.is-leaving .hero-mic__title-line--2.is-in {
       transform: translate3d(calc(var(--hero-p) * 38vw), calc(var(--hero-p) * 3vh), 0);
       opacity: calc(0.92 - var(--hero-p) * 0.45);
     }
-    .hero-mic.is-ready .hero-mic__object.is-visible.is-landed {
+    .hero-mic.is-ready.is-leaving .hero-mic__object.is-visible.is-landed {
       transform: translate3d(0, calc(var(--hero-p) * 12vh), 0)
         scale(calc(1 - var(--hero-p) * 0.38));
       opacity: calc(1 - var(--hero-p) * 0.65);
@@ -1463,7 +1482,7 @@ html[data-intro="done"] .site-nav-chrome {
   .hero-mic__notes {
     display: block;
     position: absolute;
-    inset: -4% -10%;
+    inset: -4% max(0.75rem, 2.5vw) -4% max(0.75rem, 2.5vw);
     max-width: none;
     margin: 0;
     padding: 0;
@@ -1471,18 +1490,16 @@ html[data-intro="done"] .site-nav-chrome {
     color: rgba(40, 36, 30, 0.32);
     z-index: 3;
     pointer-events: none;
-    transition:
-      opacity 1.55s var(--ease-out-soft),
-      transform 1.55s var(--ease-out-soft);
   }
-  .hero-mic__notes.is-out {
+  .hero-mic__notes.is-out .hero-mic__anno {
     opacity: 0;
-    transform: translate3d(0, 14px, 0);
+    transform: translate3d(0, 18px, 0);
   }
-  .hero-mic__notes.is-in {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    transition-delay: 0.28s;
+  .hero-mic__notes.is-in .hero-mic__anno--tl {
+    animation: hero-anno-in 2.4s var(--ease-out-soft) 0.2s forwards;
+  }
+  .hero-mic__notes.is-in .hero-mic__anno--tr {
+    animation: hero-anno-in 2.4s var(--ease-out-soft) 0.65s forwards;
   }
   .hero-mic__anno {
     position: absolute;
@@ -1494,6 +1511,7 @@ html[data-intro="done"] .site-nav-chrome {
     width: auto;
     max-width: none;
     overflow: visible;
+    will-change: opacity, transform;
   }
   .hero-mic__anno--tl {
     top: 36%;
@@ -1642,6 +1660,7 @@ html[data-intro="done"] .site-nav-chrome {
   .hero-mic__eyebrow,
   .hero-mic__credit,
   .hero-mic__notes,
+  .hero-mic__notes .hero-mic__anno,
   .hero-mic__sides,
   .hero-mic__botanicals,
   .leaf-canopy__drift,
@@ -1654,6 +1673,7 @@ html[data-intro="done"] .site-nav-chrome {
     transition: none !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
   }
   .hero-mic__object.is-visible.is-landed {
     filter: none !important;
