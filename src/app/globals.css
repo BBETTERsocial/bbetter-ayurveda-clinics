@@ -1022,25 +1022,33 @@
     transform: translate3d(0, 0, 0);
   }
 
+  /* One solid stack: BBETTER + mortar + AYURVEDA scale together via vmin */
   .hero-mic__core {
     position: absolute;
-    inset: 0;
-    display: block;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: min(92vw, 68rem);
     height: auto;
     max-width: none;
     flex: none;
     overflow: visible;
     row-gap: 0;
+    z-index: 1;
   }
 
   .hero-mic__title-line {
-    position: absolute;
-    left: 0;
-    right: 0;
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
     width: 100%;
     overflow: visible;
-    /* Scale with the monitor so BBETTER fills the stage */
-    font-size: clamp(4.4rem, 14vw, 11.5rem);
+    font-size: clamp(4rem, 12.5vmin, 10.25rem);
     letter-spacing: 0.02em;
     transition:
       opacity 0.85s var(--ease-out-soft),
@@ -1055,38 +1063,44 @@
     transform: translate3d(0, 0, 0);
   }
   .hero-mic__title-line--1 {
-    top: 17%;
+    top: auto;
+    z-index: 2;
   }
   .hero-mic__title-line--2 {
-    top: 57%;
+    top: auto;
     bottom: auto;
-    font-size: clamp(2.4rem, 8.2vw, 6rem);
+    font-size: clamp(2.25rem, 7.4vmin, 5.9rem);
     letter-spacing: 0.24em;
+    z-index: 2;
   }
   .hero-mic__title-line--2.is-in {
     opacity: 0.92;
   }
 
   .hero-mic__object {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    width: min(28vw, 17rem);
-    height: 54%;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: clamp(12rem, 29vmin, 19.5rem);
+    height: auto;
     max-height: none;
-    aspect-ratio: auto;
-    margin: 0;
+    aspect-ratio: 1100 / 1608;
+    margin: -4.6vmin auto -3.8vmin;
     flex-shrink: 0;
-    transform: translateX(-50%) scale(0.55);
+    transform: scale(0.55);
+    z-index: 4;
   }
   .hero-mic__object.is-visible.is-pop {
-    transform: translateX(-50%) scale(1.04);
+    transform: scale(1.04);
   }
   .hero-mic__object.is-visible.is-landed {
-    transform: translateX(-50%) scale(1);
+    transform: scale(1);
   }
   .hero-mic__object-img {
-    height: 100%;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: none;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -1099,7 +1113,7 @@
       opacity: calc(0.92 - var(--hero-p) * 0.45);
     }
     .hero-mic.is-ready .hero-mic__object.is-visible.is-landed {
-      transform: translate3d(-50%, calc(var(--hero-p) * 12vh), 0)
+      transform: translate3d(0, calc(var(--hero-p) * 12vh), 0)
         scale(calc(1 - var(--hero-p) * 0.38));
       opacity: calc(1 - var(--hero-p) * 0.65);
       filter: blur(calc(var(--hero-p) * 10px));
@@ -1135,7 +1149,7 @@
   .hero-mic__notes {
     display: block;
     position: absolute;
-    inset: 0;
+    inset: -4% -10%;
     max-width: none;
     margin: 0;
     padding: 0;
@@ -1167,12 +1181,12 @@
     overflow: visible;
   }
   .hero-mic__anno--tl {
-    top: 32%;
-    left: clamp(1.25rem, 3.5vw, 3.5rem);
+    top: 36%;
+    left: 0;
   }
   .hero-mic__anno--tr {
-    top: 32%;
-    right: clamp(1.25rem, 3.5vw, 3.5rem);
+    top: 36%;
+    right: 0;
     flex-direction: row-reverse;
     align-items: flex-start;
   }
@@ -1213,12 +1227,12 @@
     padding: 0;
     border: none !important;
   }
-  /* Park labels beside the wordmark — not stuck at ultrawide screen edges */
+  /* Side labels hug the scaled stack — same density on laptop + ultrawide */
   .hero-mic__side--left {
-    left: max(1.1rem, calc(50% - 34rem));
+    left: max(1rem, calc(50% - min(44vw, 31rem)));
   }
   .hero-mic__side--right {
-    right: max(1.1rem, calc(50% - 34rem));
+    right: max(1rem, calc(50% - min(44vw, 31rem)));
     flex-direction: row-reverse;
     text-align: right;
   }
