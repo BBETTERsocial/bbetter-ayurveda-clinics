@@ -100,13 +100,15 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-cream text-ink;
-  }
   html {
     @apply font-sans;
     /* Clearance under fixed header — content / anchors stay below the nav line */
     scroll-padding-top: 5.75rem;
+    /* Do NOT set overflow-x on html/body — it breaks position:sticky (mobile jitter) */
+  }
+  body {
+    @apply bg-cream text-ink;
+    max-width: 100%;
   }
   @media (prefers-reduced-motion: no-preference) {
     html {
@@ -2399,7 +2401,54 @@ html[data-intro="done"] .site-nav-chrome {
   }
 }
 
-/* Scroll stack layers */
+/* Mobile sticky stack — native scroll only, no JS transforms */
+.therapies-sticky {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 22vh;
+  display: block;
+}
+
+.therapies-sticky__item {
+  position: sticky;
+  margin: 0 0 1.5rem;
+  /* top + z-index set inline per card */
+}
+
+.therapies-sticky__item:last-child {
+  margin-bottom: 0;
+}
+
+.therapies-sticky .therapies-svc__card {
+  height: min(22rem, 58vw);
+}
+
+.therapies-sticky .therapies-svc__img {
+  transform: none;
+  transition: none;
+}
+
+.therapies-sticky .therapies-svc__card:hover,
+.therapies-sticky .therapies-svc__card:focus-visible {
+  transform: none;
+}
+
+@media (min-width: 640px) {
+  .therapies-sticky__item {
+    margin-bottom: 1.75rem;
+  }
+  .therapies-sticky .therapies-svc__card {
+    height: 24rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .therapies-sticky .therapies-svc__card {
+    height: 26rem;
+  }
+}
+
+/* Scroll stack layers (desktop JS stack) */
 .scroll-stack-inner {
   padding: 2rem 0 40vh;
   min-height: 100%;

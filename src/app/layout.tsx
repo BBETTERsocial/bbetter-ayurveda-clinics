@@ -42,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-intro="loading"
       className={`${fraunces.variable} ${outfit.variable} ${caveat.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col overflow-x-clip bg-[#F7F1E6] font-sans text-[#1A1A1A]">
+      <body className="flex min-h-full flex-col bg-[#F7F1E6] font-sans text-[#1A1A1A]">
         {children}
       </body>
     </html>

@@ -74,8 +74,8 @@ function TherapyCard({
 
 /**
  * Therapies — scroll stack:
- * mobile + iPad: 1 card per layer (no blur / no vibration)
- * desktop (xl+): 2 cards per layer × 3 layers
+ * mobile + iPad: CSS sticky stack (zero JS = no vibration)
+ * desktop (xl+): JS ScrollStack 2×3 layers
  */
 export function HomeOffer() {
   const [dualStack, setDualStack] = useState(false);
@@ -91,7 +91,10 @@ export function HomeOffer() {
   return (
     <section
       id="therapies"
-      className="therapies-svc relative isolate overflow-x-clip bg-[#F7F1E6]"
+      className={[
+        "therapies-svc relative isolate bg-[#F7F1E6]",
+        dualStack ? "overflow-x-clip" : "",
+      ].join(" ")}
       aria-labelledby="offer-heading"
     >
       <div className="mx-auto max-w-7xl px-5 pt-14 sm:px-8 sm:pt-16 lg:px-10 lg:pt-20 xl:max-w-[88rem]">
@@ -161,23 +164,23 @@ export function HomeOffer() {
           </ScrollStack>
         </div>
       ) : (
-        <div className="mx-auto mt-10 max-w-xl px-5 pb-16 sm:mt-12 sm:px-8 md:max-w-2xl">
-          <ScrollStack
-            className="therapies-svc__stack therapies-svc__stack--single"
-            itemDistance={88}
-            itemStackDistance={24}
-            stackPosition="20%"
-            scaleEndPosition="12%"
-            baseScale={0.92}
-            itemScale={0.015}
-            blurAmount={0}
-          >
-            {site.therapies.map((therapy) => (
-              <ScrollStackItem key={therapy.name} itemClassName="therapies-svc__layer">
-                <TherapyCard therapy={therapy} />
-              </ScrollStackItem>
+        <div className="mx-auto mt-10 max-w-xl px-5 pb-20 sm:mt-12 sm:px-8 md:max-w-2xl">
+          <ul className="therapies-sticky">
+            {site.therapies.map((therapy, index) => (
+              <li
+                key={therapy.name}
+                className="therapies-sticky__item"
+                style={{
+                  zIndex: index + 1,
+                  top: `calc(5.25rem + ${index * 0.55}rem)`,
+                }}
+              >
+                <div className="therapies-svc__layer">
+                  <TherapyCard therapy={therapy} />
+                </div>
+              </li>
             ))}
-          </ScrollStack>
+          </ul>
         </div>
       )}
     </section>
