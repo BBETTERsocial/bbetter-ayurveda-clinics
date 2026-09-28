@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { ContentCardGrid, ContentIndexHero } from "@/components/content/ContentViews";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { pageMetadata, seo } from "@/lib/seo";
 import { getPosts } from "@/lib/wordpress";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Ayurveda insights, patient stories, and wellness guidance from BBETTER Ayurveda Clinics in Hyderabad.",
-};
+export const metadata: Metadata = pageMetadata(seo.blog);
 
 export default async function BlogIndexPage() {
   const posts = await getPosts();

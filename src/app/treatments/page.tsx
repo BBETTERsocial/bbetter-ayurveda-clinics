@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { ContentCardGrid, ContentIndexHero } from "@/components/content/ContentViews";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { pageMetadata, seo } from "@/lib/seo";
 import { getTreatments } from "@/lib/wordpress";
 
-export const metadata: Metadata = {
-  title: "Treatments",
-  description:
-    "Ayurvedic treatment pages for conditions we support at BBETTER clinics in Kukatpally and Nallagandla, Hyderabad.",
-};
+export const metadata: Metadata = pageMetadata(seo.treatments);
 
 export default async function TreatmentsIndexPage() {
   const treatments = await getTreatments();

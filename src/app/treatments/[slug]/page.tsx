@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentArticle } from "@/components/content/ContentViews";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { siteUrl } from "@/lib/seo";
 import { getTreatmentBySlug, getTreatments } from "@/lib/wordpress";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -15,9 +16,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const treatment = await getTreatmentBySlug(slug);
   if (!treatment) return { title: "Treatment" };
+
+  const title = treatment.seoTitle || treatment.title;
+  const description = treatment.seoDescription || treatment.excerpt;
+  const url = `${siteUrl}/treatments/${encodeURIComponent(treatment.slug)}`;
+
   return {
-    title: treatment.seoTitle || treatment.title,
-    description: treatment.seoDescription || treatment.excerpt,
+    title: { absolute: title },
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "article",
+      siteName: "BBETTER Ayurveda Clinics",
+      ...(treatment.image ? { images: [{ url: treatment.image, alt: title }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(treatment.image ? { images: [treatment.image] } : {}),
+    },
   };
 }
 

@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import { ContactContent } from "@/components/contact/ContactContent";
 import { HomeBooking } from "@/components/home/HomeBooking";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { pageMetadata, seo } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description:
-    "Contact BBETTER Ayurveda clinics in Kukatpally and Nallagandla, Hyderabad — addresses, timings, phone numbers, and Google Maps.",
-};
+export const metadata: Metadata = pageMetadata(seo.contact);
 
 export default function ContactPage() {
   return (
