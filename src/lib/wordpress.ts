@@ -204,7 +204,12 @@ function extractImage(item: WpEntity): string | null {
   if (fromEmbed) return fromEmbed;
 
   const fromYoast = item.yoast_head_json?.og_image?.[0]?.url;
-  return fromYoast || null;
+  if (fromYoast) return fromYoast;
+
+  // Fall back to first inline image in the body (keeps card thumbnails accurate)
+  const body = item.content?.rendered || "";
+  const inline = body.match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i);
+  return inline?.[1] || null;
 }
 
 function extractReadingMinutes(item: WpEntity): number | undefined {

@@ -73,7 +73,10 @@ export function cleanWpContent(rawHtml: string): CleanedWpContent {
     "<h$1>$2</h$1>"
   );
 
-  // Remove empty paragraphs / leftover empty wrappers noise
+  // Page already renders the post title — drop a leading duplicate H1 from the body
+  html = html.replace(/^\s*<h1\b[^>]*>[\s\S]*?<\/h1>\s*/i, "");
+
+  // Drop empty paragraphs / leftover empty wrappers noise
   html = html.replace(/<p\b[^>]*>\s*<\/p>/gi, "");
   html = html.replace(/(?:\s|&nbsp;|<br\s*\/?>)+$/gi, "");
 

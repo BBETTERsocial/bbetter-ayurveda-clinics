@@ -118,6 +118,11 @@ export function ContentArticle({
   ctaHref?: string;
   ctaLabel?: string;
 }) {
+  // Keep WP body order (text/images as authored). Skip hero if body already has media —
+  // otherwise the same photo repeats above the article.
+  const bodyHasImage = /<img\b/i.test(contentHtml);
+  const showHero = Boolean(image) && !bodyHasImage;
+
   return (
     <article className="pb-16 sm:pb-20 lg:pb-24">
       <div className="mx-auto max-w-3xl px-5 pt-8 sm:px-8 sm:pt-12">
@@ -144,11 +149,11 @@ export function ContentArticle({
         </header>
       </div>
 
-      {image ? (
+      {showHero ? (
         <div className="mx-auto mt-8 max-w-4xl px-5 sm:mt-10 sm:px-8">
           <div className="relative aspect-[16/9] overflow-hidden rounded-[1.25rem] bg-[#1A3D2E]">
             <Image
-              src={image}
+              src={image!}
               alt=""
               fill
               priority
