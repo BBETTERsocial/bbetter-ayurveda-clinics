@@ -5,11 +5,54 @@ export const site = {
   mission: "Authentic healing. Two clinics. One mission.",
   story: {
     title: "Our Story",
-    body: "BBETTER Ayurveda is a trusted chain of Ayurvedic hospitals bringing ancient Ayurvedic wisdom to modern Hyderabad. Our team of experienced MD Ayurvedic doctors provides authentic treatments with a commitment to natural healing and personalized care. We help you achieve optimal health through time-tested Ayurvedic treatments and therapies.",
+    body: "BBETTER Ayurveda is a consultation-led Ayurveda care centre in Hyderabad focused on pain management, mobility support, and lifestyle balance through traditional Ayurvedic principles. The approach combines classical Ayurvedic understanding with personalized guidance to help individuals manage discomfort, improve daily functioning, and move toward long-term wellness.",
+    focus:
+      "The focus is on identifying underlying imbalances and supporting the body using natural, non-invasive Ayurvedic methods.",
   },
   missionFull: {
     title: "Our Mission",
-    body: "To provide authentic Ayurvedic treatments that restore balance, promote wellness, and enhance quality of life for every individual through our chain of well-equipped Ayurvedic hospitals.",
+    body: "Ayurveda views pain and health concerns as outcomes of internal imbalance rather than isolated symptoms. BBETTER Ayurveda follows a structured approach that begins with consultation, understanding body constitution, and evaluating lifestyle patterns before recommending suitable care.",
+  },
+  aboutCallout: {
+    title: "Tailored Ayurveda Solutions",
+    subtitle: "Customized care for your unique body.",
+  },
+  aboutApproach: {
+    title: "What Makes the Approach Different",
+    items: [
+      "Consultation-first model",
+      "Personalized Ayurveda care planning",
+      "Traditional therapies guided by assessment",
+      "Focus on mobility and pain support",
+      "Lifestyle and diet alignment",
+      "Natural care methods",
+    ],
+  },
+  aboutScope: {
+    title: "Scope of Care",
+    lead: "BBETTER Ayurveda supports individuals seeking Ayurvedic guidance for:",
+    items: [
+      "Joint discomfort and stiffness",
+      "Back and neck pain patterns",
+      "Sciatica-related discomfort",
+      "Digestive imbalance",
+      "Stress-related body fatigue",
+      "Sleep irregularities",
+      "Body detox support",
+      "Preventive wellness",
+    ],
+  },
+  aboutPathway: {
+    title: "Care Pathway",
+    items: [
+      "Initial consultation",
+      "Body constitution understanding",
+      "Symptom pattern evaluation",
+      "Lifestyle and diet assessment",
+      "Ayurveda care recommendations",
+      "Therapy guidance (if required)",
+      "Follow-up and monitoring",
+    ],
   },
   aboutStats: [
     { value: "10+", label: "Years Experience" },
@@ -20,24 +63,28 @@ export const site = {
       label: "Certified Ayurvedic Experts",
     },
   ],
-  phoneDisplay: "9247534449",
-  phoneHref: "tel:9247534449",
-  whatsapp: "919247534449",
-  whatsappHref: "https://wa.me/919247534449",
+  /** Primary line (Kukatpally) — header / sticky call */
+  phoneDisplay: "8019578877",
+  phoneHref: "tel:8019578877",
+  whatsapp: "918019578877",
+  whatsappHref: "https://wa.me/918019578877",
   locations: [
     {
       name: "Kukatpally",
       address:
         "MIG 531-II, Rd Number 1, Kukatpally Housing Board Colony, Kukatpally, Hyderabad, Telangana 500072",
       timings: "9:00 AM – 8:00 PM",
+      phoneDisplay: "8019578877",
+      phoneHref: "tel:8019578877",
       /** Set to "/images/locations/kukatpally.jpg" after dropping the photo. */
       image: "/images/locations/kukatpally.jpg",
-
-  },
+    },
     {
       name: "Nallagandla",
       address: "2nd floor, Plot No. 4C, Huda Layout, Nallagandla, Hyderabad",
       timings: "9:00 AM – 8:00 PM",
+      phoneDisplay: "9247953637",
+      phoneHref: "tel:9247953637",
       /** Set to "/images/locations/nallagandla.jpg" after dropping the photo. */
       image: "/images/locations/nallagandla.jpg",
     },
@@ -78,13 +125,11 @@ export const site = {
     },
   ],
   nav: [
-    { href: "/#our-story", label: "About" },
-    { href: "/#therapies", label: "Therapies" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About Us" },
+    { href: "/therapies", label: "Therapies" },
     { href: "/treatments", label: "Treatments" },
-    { href: "/#doctors", label: "Doctors" },
     { href: "/blog", label: "Blog" },
-    { href: "/#reviews", label: "Reviews" },
-    { href: "/#locations", label: "Locations" },
   ],
   why: [
     {
@@ -234,13 +279,11 @@ export const site = {
     },
   ],
   footerNav: [
-    { href: "/#our-story", label: "About" },
-    { href: "/#therapies", label: "Therapies" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About Us" },
+    { href: "/therapies", label: "Therapies" },
     { href: "/treatments", label: "Treatments" },
-    { href: "/#doctors", label: "Doctors" },
     { href: "/blog", label: "Blog" },
-    { href: "/#reviews", label: "Reviews" },
-    { href: "/#locations", label: "Locations" },
     { href: "/#faq", label: "FAQ" },
     { href: "/#book", label: "Book" },
   ],

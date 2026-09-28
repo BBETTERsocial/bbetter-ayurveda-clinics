@@ -194,25 +194,27 @@ export function HomeBooking() {
           >
             Send us a message
           </h2>
-          <p className="mt-3 text-[14px] leading-relaxed text-[#4A4A4A] sm:text-[15px]">
+          <p className="mt-3 text-[14px] leading-relaxed text-black sm:text-[15px]">
             Tell us your concern and preferred clinic. We’ll confirm your appointment at
             Kukatpally or Nallagandla.
           </p>
 
           <div className="book-mic__contacts mt-6 flex flex-wrap items-center gap-4 sm:gap-5">
-            <a href={site.phoneHref} className="book-mic__contact">
-              <span className="book-mic__contact-icon">
-                <IconPhone />
-              </span>
-              <span className="flex flex-col leading-tight">
-                <span className="text-[9px] font-semibold tracking-[0.16em] text-[#4A4A4A]/70 uppercase">
-                  Call Us
+            {site.locations.map((loc) => (
+              <a key={loc.name} href={loc.phoneHref} className="book-mic__contact">
+                <span className="book-mic__contact-icon">
+                  <IconPhone />
                 </span>
-                <span className="text-[14px] font-semibold text-[#0B1F18] tabular-nums">
-                  {site.phoneDisplay}
+                <span className="flex flex-col leading-tight">
+                  <span className="text-[9px] font-semibold tracking-[0.16em] text-black uppercase">
+                    {loc.name}
+                  </span>
+                  <span className="text-[14px] font-semibold text-[#0B1F18] tabular-nums">
+                    {loc.phoneDisplay}
+                  </span>
                 </span>
-              </span>
-            </a>
+              </a>
+            ))}
 
             <span className="hidden h-9 w-px bg-[#0B1F18]/12 sm:block" aria-hidden />
 
@@ -226,7 +228,7 @@ export function HomeBooking() {
                 <IconWa />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-[9px] font-semibold tracking-[0.16em] text-[#4A4A4A]/70 uppercase">
+                <span className="text-[9px] font-semibold tracking-[0.16em] text-black uppercase">
                   WhatsApp
                 </span>
                 <span className="text-[14px] font-semibold text-[#0B1F18]">Chat on WhatsApp</span>

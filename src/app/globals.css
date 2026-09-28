@@ -22,7 +22,7 @@
   --color-cream: #f7f1e6;
   --color-cream-deep: #ebe3d4;
   --color-ink: #1a1a1a;
-  --color-ink-muted: #4a4a4a;
+  --color-ink-muted: #000000;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -72,7 +72,7 @@
   --secondary: #ebe3d4;
   --secondary-foreground: #1a3d2e;
   --muted: #ebe3d4;
-  --muted-foreground: #4a4a4a;
+  --muted-foreground: #000000;
   --accent: #ebe3d4;
   --accent-foreground: #1a3d2e;
   --destructive: #9b2c2c;
@@ -2262,7 +2262,7 @@ html[data-intro="done"] .site-nav-chrome {
 .doctors-mic__study {
   margin: 0;
   font-size: 0.72rem;
-  color: #4a4a4a;
+  color: #000000;
 }
 
 .doctors-mic__study span {
@@ -2292,7 +2292,7 @@ html[data-intro="done"] .site-nav-chrome {
   margin: 0.85rem 0 0;
   font-size: 0.78rem;
   line-height: 1.45;
-  color: #4a4a4a;
+  color: #000000;
 }
 
 .doctors-mic__cta {
@@ -3505,7 +3505,7 @@ html[data-intro="done"] .site-nav-chrome {
   background: #f7f3ea;
   font-size: 0.875rem;
   line-height: 1.55;
-  color: #4a4a4a;
+  color: #000000;
 }
 
 @media (min-width: 640px) {
@@ -3629,7 +3629,8 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 /* -- Content index / article (blog + treatments) -- */
-.content-index__lines {
+.content-index__lines,
+.about-page__lines {
   background-image:
     linear-gradient(rgba(40, 36, 30, 0.028) 1px, transparent 1px),
     linear-gradient(90deg, rgba(40, 36, 30, 0.028) 1px, transparent 1px);
@@ -3800,7 +3801,7 @@ html[data-intro="done"] .site-nav-chrome {
 
 .article-faqs__a {
   padding: 0 0 1rem;
-  color: #4a4a4a;
+  color: #000000;
   font-size: 0.95rem;
   line-height: 1.65;
 }

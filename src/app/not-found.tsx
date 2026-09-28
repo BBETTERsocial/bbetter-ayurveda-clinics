@@ -11,7 +11,7 @@ export default function NotFound() {
         <h1 className="font-display mt-3 text-3xl font-semibold text-[#0B1F18]">
           Page not found
         </h1>
-        <p className="mt-3 text-[15px] text-[#4A4A4A]">
+        <p className="mt-3 text-[15px] text-black">
           That page may have moved, or the link is outdated.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

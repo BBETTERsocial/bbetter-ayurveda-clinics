@@ -208,7 +208,7 @@ export function HomeHowItWorks() {
                 <h3 className="font-display text-[1.15rem] font-semibold text-[#0B1F18] sm:text-[1.2rem]">
                   {step.title}
                 </h3>
-                <p className="mt-1 text-[13px] leading-snug text-[#4A4A4A]">{step.text}</p>
+                <p className="mt-1 text-[13px] leading-snug text-black">{step.text}</p>
               </div>
             ))}
           </div>

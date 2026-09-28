@@ -69,7 +69,7 @@ export function HomeLocations() {
           >
             Two clinics in Hyderabad
           </h2>
-          <p className="mt-2 max-w-md text-[14px] leading-relaxed text-[#4A4A4A] sm:text-[15px]">
+          <p className="mt-2 max-w-md text-[14px] leading-relaxed text-black sm:text-[15px]">
             Same standard of Ayurvedic care — choose the branch that works for you.
           </p>
         </FadeUp>
@@ -93,7 +93,7 @@ export function HomeLocations() {
                   Hyderabad
                 </p>
 
-                <div className="loc-mic__address flex gap-2 text-[13px] leading-snug text-[#4A4A4A]">
+                <div className="loc-mic__address flex gap-2 text-[13px] leading-snug text-black">
                   <PinIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1A3D2E]" />
                   <p>{loc.address}</p>
                 </div>
@@ -101,7 +101,7 @@ export function HomeLocations() {
                 <div className="loc-mic__hours flex items-center gap-2 text-[12px]">
                   <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#1A3D2E]" />
                   <p>
-                    <span className="tracking-[0.12em] text-[#4A4A4A] uppercase">Open </span>
+                    <span className="tracking-[0.12em] text-black uppercase">Open </span>
                     <span className="font-semibold text-[#0B1F18]">{loc.timings}</span>
                   </p>
                 </div>
@@ -148,7 +148,7 @@ export function HomeLocations() {
                   <span className="h-8 w-px shrink-0 bg-[#0B1F18]/12" aria-hidden />
 
                   <a
-                    href={site.phoneHref}
+                    href={loc.phoneHref}
                     className="inline-flex min-w-0 items-center gap-2 hover:opacity-80"
                   >
                     <PhoneIcon className="h-4 w-4 shrink-0 text-[#B5985A]" />
@@ -157,7 +157,7 @@ export function HomeLocations() {
                         Call Us
                       </span>
                       <span className="text-[13px] font-semibold text-[#0B1F18] tabular-nums">
-                        {site.phoneDisplay}
+                        {loc.phoneDisplay}
                       </span>
                     </span>
                   </a>

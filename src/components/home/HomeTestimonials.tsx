@@ -67,13 +67,13 @@ export function HomeTestimonials({ reviews }: { reviews: YtReview[] }) {
           >
             Video testimonials
           </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-[#4A4A4A] sm:text-base">
+          <p className="mt-3 text-[15px] leading-relaxed text-black sm:text-base">
             Hear experiences shared through video.
           </p>
         </FadeUp>
 
         {!items.length ? (
-          <p className="mt-12 text-center text-[#4A4A4A]">
+          <p className="mt-12 text-center text-black">
             Video reviews will appear here once published in WordPress.
           </p>
         ) : (

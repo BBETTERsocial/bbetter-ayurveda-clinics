@@ -3,7 +3,7 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 
 const explore = site.footerNav.filter((item) =>
-  ["About", "Therapies", "Treatments", "Doctors", "Blog", "Reviews"].includes(item.label)
+  ["Home", "About Us", "Therapies", "Treatments", "Blog"].includes(item.label)
 );
 
 const visit = [
@@ -52,11 +52,16 @@ export function SiteFooter() {
           <div>
             <p className="foot-mic__heading">Contact</p>
             <ul className="foot-mic__links">
-              <li>
-                <a href={site.phoneHref} className="foot-mic__phone">
-                  {site.phoneDisplay}
-                </a>
-              </li>
+              {site.locations.map((loc) => (
+                <li key={loc.name}>
+                  <a href={loc.phoneHref} className="foot-mic__phone">
+                    <span className="block text-[10px] font-semibold tracking-[0.12em] text-[#0B1F18]/55 uppercase">
+                      {loc.name}
+                    </span>
+                    {loc.phoneDisplay}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer">
                   WhatsApp

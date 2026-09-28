@@ -144,8 +144,18 @@ export function HomeStory() {
             >
               {site.story.title}
             </h2>
-            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-[#4A4A4A] sm:text-[16.5px]">
+            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-black sm:text-[16.5px]">
               {site.story.body}
+            </p>
+            <p className="mt-4 max-w-xl text-[15.5px] leading-[1.8] text-black sm:text-[16.5px]">
+              {site.story.focus}
+            </p>
+
+            <h3 className="font-display mt-8 text-[1.35rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.5rem]">
+              {site.missionFull.title}
+            </h3>
+            <p className="mt-3 max-w-xl text-[15.5px] leading-[1.8] text-black sm:text-[16.5px]">
+              {site.missionFull.body}
             </p>
 
             <div className="mt-8 h-px w-full max-w-xl bg-[#1A3D2E]/12" aria-hidden />
@@ -202,10 +212,10 @@ export function HomeStory() {
                   “
                 </p>
                 <h3 className="mt-1 text-[11px] font-semibold tracking-[0.26em] text-[#E8D48B] uppercase">
-                  {site.missionFull.title}
+                  {site.aboutCallout.title}
                 </h3>
                 <p className="story-mic__mission-copy font-display mt-5 pr-6 text-[1.15rem] leading-[1.55] font-medium text-[#F3EFE6] sm:pr-10 sm:text-[1.3rem] lg:pr-14 lg:text-[1.4rem]">
-                  {site.missionFull.body}
+                  {site.aboutCallout.subtitle}
                 </p>
               </aside>
 

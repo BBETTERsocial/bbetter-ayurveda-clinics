@@ -146,7 +146,7 @@ export function HomeDoctors() {
               >
                 Our Doctors
               </h2>
-              <p className="mt-3 max-w-md text-[15px] leading-relaxed text-[#4A4A4A] sm:text-base">
+              <p className="mt-3 max-w-md text-[15px] leading-relaxed text-black sm:text-base">
                 MD Ayurvedic doctors — study, skills, and care you can trust.
               </p>
             </div>

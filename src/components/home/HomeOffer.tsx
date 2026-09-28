@@ -101,7 +101,7 @@ export function HomeOffer() {
         <FadeUp>
           <div className="therapies-svc__header grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-[13px] font-medium tracking-[-0.01em] text-[#0B1F18]/70">
+              <p className="text-[13px] font-medium tracking-[-0.01em] text-black">
                 <span className="text-[#B5985A]">/</span> Therapies We Offer
               </p>
               <h2
@@ -115,23 +115,23 @@ export function HomeOffer() {
             </div>
 
             <div className="max-w-md lg:justify-self-end">
-              <p className="text-[15px] leading-relaxed text-[#4A4A4A] sm:text-base">
+              <p className="text-[15px] leading-relaxed text-black sm:text-base">
                 Time-tested therapies delivered with knowledge, precision, and intention —
                 guided by MD Ayurvedic doctors at our Hyderabad clinics.
               </p>
               <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
                 <a
+                  href="/therapies"
+                  className="therapies-svc__cta inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0B1F18] transition-colors hover:text-[#006B56]"
+                >
+                  View all therapies
+                  <span aria-hidden>›</span>
+                </a>
+                <a
                   href="/#book"
                   className="therapies-svc__cta inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0B1F18] transition-colors hover:text-[#006B56]"
                 >
                   Book a Consultation
-                  <span aria-hidden>›</span>
-                </a>
-                <a
-                  href={site.phoneHref}
-                  className="therapies-svc__cta inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#0B1F18] transition-colors hover:text-[#006B56]"
-                >
-                  Call For Booking
                   <span aria-hidden>›</span>
                 </a>
               </div>

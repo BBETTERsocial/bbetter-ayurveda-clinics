@@ -21,7 +21,7 @@ export function ContentIndexHero({
       <h1 className="font-display mt-3 text-[2.2rem] leading-[1.1] font-semibold tracking-tight text-[#0B1F18] sm:text-4xl lg:text-[2.75rem]">
         {title}
       </h1>
-      <p className="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-[#4A4A4A] sm:text-base">
+      <p className="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-black sm:text-base">
         {lead}
       </p>
     </header>
@@ -39,7 +39,7 @@ export function ContentCardGrid({
 }) {
   if (!items.length) {
     return (
-      <p className="mx-auto mt-12 max-w-lg px-5 text-center text-[#4A4A4A]">
+      <p className="mx-auto mt-12 max-w-lg px-5 text-center text-black">
         {emptyLabel}
       </p>
     );
@@ -80,7 +80,7 @@ export function ContentCardGrid({
                 {item.title}
               </h2>
               {item.excerpt ? (
-                <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-[#4A4A4A]">
+                <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-black">
                   {item.excerpt}
                 </p>
               ) : null}
