@@ -68,7 +68,6 @@ export function ArticleFaqs({ faqs }: { faqs: WpFaq[] }) {
                 id={panelId}
                 role="region"
                 aria-labelledby={btnId}
-                hidden={!isOpen}
                 className={`article-faqs__panel${isOpen ? " is-open" : ""}`}
               >
                 <div className="article-faqs__panel-inner">

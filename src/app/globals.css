@@ -1866,6 +1866,37 @@ html[data-intro="done"] .site-nav-chrome {
   .btn-press:active {
     transform: translateY(0);
   }
+  /* Arrow chip nudges forward on button hover/focus */
+  .btn-press svg {
+    transition: transform 0.28s var(--ease-out-soft);
+  }
+  .btn-press:hover svg,
+  .btn-press:focus-visible svg {
+    transform: translateX(2px);
+  }
+
+  /* Animated gold underline for desktop nav links */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.4rem;
+    height: 1.5px;
+    background: #c9a227;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.32s var(--ease-out-soft);
+  }
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after,
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
   .img-zoom {
     transition: transform 0.7s var(--ease-out-soft);
   }
@@ -1889,13 +1920,30 @@ html[data-intro="done"] .site-nav-chrome {
   .faq-icon.is-open {
     transform: rotate(45deg);
   }
-  .float-wa:hover {
-    transform: translateY(-4px) scale(1.06);
-  }
   .float-wa {
     transition:
       transform 0.3s var(--ease-out-soft),
       box-shadow 0.3s ease;
+  }
+  /* Soft idle presence — draws the eye without nagging */
+  .float-wa.is-shown {
+    animation: float-wa-breathe 4.5s ease-in-out infinite;
+  }
+  .float-wa:hover {
+    transform: translateY(-4px) scale(1.06);
+    animation-play-state: paused;
+  }
+}
+
+@keyframes float-wa-breathe {
+  0%,
+  100% {
+    box-shadow: 0 10px 30px rgba(11, 31, 24, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 10px 30px rgba(11, 31, 24, 0.45),
+      0 0 0 8px rgba(26, 61, 46, 0.12);
   }
   .step-dot {
     transition:
@@ -1916,9 +1964,27 @@ html[data-intro="done"] .site-nav-chrome {
   .leaf-shape,
   .hero-rule,
   .hero-scroll-cue,
-  .ticker__track {
+  .ticker__track,
+  .float-wa.is-shown {
     animation: none !important;
   }
+}
+
+/* ── Keyboard focus (accessibility) — quiet gold ring for tab users only ── */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+summary:focus-visible {
+  outline: 2px solid rgba(201, 162, 39, 0.9);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+/* Inputs get a soft ring instead of a hard outline */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.28);
 }
 
 /* ── Our Story (editorial grid + mission card) ── */
@@ -3462,15 +3528,47 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .faq-mic__panel {
+  display: grid;
+  grid-template-rows: 0fr;
   overflow: hidden;
+  transition: grid-template-rows 0.85s var(--ease-out-soft);
 }
 
-.faq-mic__panel[hidden] {
-  display: none !important;
+.faq-mic__panel.is-open {
+  grid-template-rows: 1fr;
 }
 
 .faq-mic__panel-inner {
   overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .faq-mic__toggle {
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      transform 0.35s var(--ease-out-soft);
+  }
+  .faq-mic__trigger:hover .faq-mic__toggle {
+    background: rgba(26, 61, 46, 0.16);
+    transform: scale(1.08);
+  }
+  .faq-mic__item.is-open .faq-mic__toggle {
+    background: #1a3d2e;
+    color: #ebe8e2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-mic__panel {
+    transition: none;
+  }
+  .faq-mic__a {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .faq-mic__a {
@@ -3482,6 +3580,16 @@ html[data-intro="done"] .site-nav-chrome {
   font-size: 0.875rem;
   line-height: 1.55;
   color: #000000;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.7s var(--ease-out-soft) 0.12s,
+    transform 0.7s var(--ease-out-soft) 0.12s;
+}
+
+.faq-mic__panel.is-open .faq-mic__a {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (min-width: 640px) {
@@ -3765,15 +3873,48 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .article-faqs__panel {
+  display: grid;
+  grid-template-rows: 0fr;
   overflow: hidden;
+  transition: grid-template-rows 0.85s var(--ease-out-soft);
 }
 
-.article-faqs__panel[hidden] {
-  display: none !important;
+.article-faqs__panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .article-faqs__toggle {
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      transform 0.35s var(--ease-out-soft);
+  }
+  .article-faqs__trigger:hover .article-faqs__toggle {
+    background: rgba(26, 61, 46, 0.1);
+    transform: scale(1.08);
+  }
+  .article-faqs__trigger[aria-expanded="true"] .article-faqs__toggle {
+    background: #1a3d2e;
+    color: #ebe8e2;
+    border-color: #1a3d2e;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-faqs__panel {
+    transition: none;
+  }
+  .article-faqs__a {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .article-faqs__panel-inner {
   overflow: hidden;
+  min-height: 0;
 }
 
 .article-faqs__a {
@@ -3781,6 +3922,16 @@ html[data-intro="done"] .site-nav-chrome {
   color: #000000;
   font-size: 0.95rem;
   line-height: 1.65;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.7s var(--ease-out-soft) 0.12s,
+    transform 0.7s var(--ease-out-soft) 0.12s;
+}
+
+.article-faqs__panel.is-open .article-faqs__a {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .article-faqs__a p {

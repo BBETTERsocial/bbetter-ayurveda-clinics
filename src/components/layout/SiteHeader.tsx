@@ -34,6 +34,14 @@ function AppLink({
   );
 }
 
+/** Highlight the current section in the nav. Root only matches exactly. */
+function isActivePath(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  const base = href.split("#")[0];
+  if (!base) return false;
+  return pathname === base || pathname.startsWith(`${base}/`);
+}
+
 /** Quiet brand mark — does not compete with hero type. */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -107,15 +115,24 @@ export function SiteHeader() {
           aria-label="Primary"
           className="site-nav-chrome hidden items-center justify-center gap-5 lg:flex lg:gap-6 xl:gap-8"
         >
-          {site.nav.map((item) => (
-            <AppLink
-              key={item.href}
-              href={item.href}
-              className="font-display text-[0.8rem] tracking-[0.04em] text-[#1A1A1A]/70 transition-colors hover:text-[#006B56]"
-            >
-              {item.label}
-            </AppLink>
-          ))}
+          {site.nav.map((item) => {
+            const active = isActivePath(pathname, item.href);
+            return (
+              <AppLink
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={[
+                  "nav-link font-display text-[0.8rem] tracking-[0.04em] transition-colors",
+                  active
+                    ? "is-active text-[#006B56]"
+                    : "text-[#1A1A1A]/70 hover:text-[#006B56]",
+                ].join(" ")}
+              >
+                {item.label}
+              </AppLink>
+            );
+          })}
         </nav>
 
         <div className="site-nav-chrome flex shrink-0 items-center justify-self-end gap-1.5 sm:gap-3">
@@ -186,17 +203,31 @@ export function SiteHeader() {
             {[
               ...site.nav,
               { href: "/#faq", label: "FAQ" },
-            ].map((item) => (
-              <li key={item.href}>
-                <AppLink
-                  href={item.href}
-                  onClick={closeMenu}
-                  className="block border-b border-[#1A3D2E]/8 py-3.5 text-[13px] font-semibold tracking-[0.14em] text-[#1A1A1A] uppercase"
-                >
-                  {item.label}
-                </AppLink>
-              </li>
-            ))}
+            ].map((item) => {
+              const active = isActivePath(pathname, item.href);
+              return (
+                <li key={item.href}>
+                  <AppLink
+                    href={item.href}
+                    onClick={closeMenu}
+                    aria-current={active ? "page" : undefined}
+                    className={[
+                      "flex items-center gap-2.5 border-b border-[#1A3D2E]/8 py-3.5 text-[13px] font-semibold tracking-[0.14em] uppercase transition-colors",
+                      active ? "text-[#006B56]" : "text-[#1A1A1A]",
+                    ].join(" ")}
+                  >
+                    <span
+                      className={[
+                        "h-1.5 w-1.5 rounded-full transition-all duration-300",
+                        active ? "bg-[#C9A227] scale-100" : "scale-0",
+                      ].join(" ")}
+                      aria-hidden
+                    />
+                    {item.label}
+                  </AppLink>
+                </li>
+              );
+            })}
           </ul>
           <AppLink
             href="/#book"

@@ -85,7 +85,6 @@ export function HomeFaq() {
                       id={panelId}
                       role="region"
                       aria-labelledby={btnId}
-                      hidden={!isOpen}
                       className={`faq-mic__panel${isOpen ? " is-open" : ""}`}
                     >
                       <div className="faq-mic__panel-inner">
