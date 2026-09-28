@@ -3,8 +3,7 @@ import { FadeUp } from "@/components/ui/FadeUp";
 import { site } from "@/lib/site";
 
 function mapsHref(loc: (typeof site.locations)[number]) {
-  if ("mapUrl" in loc && loc.mapUrl) return loc.mapUrl;
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.address)}`;
+  return loc.mapUrl;
 }
 
 function PinIcon({ className = "" }: { className?: string }) {
