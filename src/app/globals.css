@@ -3810,6 +3810,10 @@ html[data-intro="done"] .site-nav-chrome {
 
 .wp-prose .e-n-accordion,
 .wp-prose .e-n-accordion-item,
-.wp-prose .elementor-widget-n-accordion {
+.wp-prose .elementor-widget-n-accordion,
+.wp-prose .wp-block-gutenkit-faq,
+.wp-prose .wp-block-gutenkit-faq-item,
+.wp-prose .gkit-faq,
+.wp-prose .gkit-faq-item {
   display: none !important;
 }

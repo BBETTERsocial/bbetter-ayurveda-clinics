@@ -6,8 +6,8 @@ export type CleanedWpContent = {
 };
 
 /**
- * WordPress/Elementor content cleanup:
- * - pull nested-accordion FAQs into structured data
+ * WordPress content cleanup:
+ * - pull FAQs (Elementor accordion + GutenKit FAQ blocks) into structured data
  * - strip embeds, share widgets, empty chrome
  */
 export function cleanWpContent(rawHtml: string): CleanedWpContent {
@@ -15,6 +15,28 @@ export function cleanWpContent(rawHtml: string): CleanedWpContent {
 
   let html = rawHtml;
   const faqs: WpFaq[] = [];
+
+  // GutenKit FAQ items (used on treatment pages)
+  // Structure: .gkit-faq-item-title + sibling .gkit-faq-item-body
+  html = html.replace(
+    /<div\b[^>]*class="[^"]*gkit-faq-item-header[^"]*"[^>]*>\s*<h([1-6])\b[^>]*class="[^"]*gkit-faq-item-title[^"]*"[^>]*>([\s\S]*?)<\/h\1>\s*<\/div>\s*<div\b[^>]*class="[^"]*gkit-faq-item-body[^"]*"[^>]*>([\s\S]*?)<\/div>/gi,
+    (_full, _level: string, titleInner: string, bodyInner: string) => {
+      const question = stripTags(titleInner).trim();
+      const answerHtml = tidyAnswerHtml(bodyInner);
+      if (question && answerHtml) {
+        faqs.push({ question, answerHtml });
+      }
+      return "";
+    }
+  );
+
+  // Strip empty GutenKit FAQ item / wrapper shells left after extraction
+  for (let i = 0; i < 6; i++) {
+    html = html.replace(
+      /<div\b[^>]*(?:data-block="gutenkit\/faq(?:-item)?"|class="[^"]*(?:wp-block-gutenkit-faq|gkit-faq-item|gkit-faq)[^"]*")[^>]*>\s*<\/div>/gi,
+      ""
+    );
+  }
 
   // Elementor nested accordion items
   html = html.replace(
@@ -48,7 +70,7 @@ export function cleanWpContent(rawHtml: string): CleanedWpContent {
     }
   );
 
-  // Drop empty Elementor accordion shells + FAQ heading that only wrapped them
+  // Drop empty Elementor accordion shells
   html = html.replace(
     /<div\b[^>]*elementor-widget-n-accordion[^>]*>[\s\S]*?<\/div>\s*<\/div>/gi,
     ""
@@ -80,15 +102,12 @@ export function cleanWpContent(rawHtml: string): CleanedWpContent {
   html = html.replace(/<p\b[^>]*>\s*<\/p>/gi, "");
   html = html.replace(/(?:\s|&nbsp;|<br\s*\/?>)+$/gi, "");
 
-  // If FAQ heading remains with nothing under it useful, keep it — Accordion section has its own title
+  // FAQ heading is handled by ArticleFaqs
   html = html.replace(
     /<h2\b[^>]*>\s*(?:తరచుగా అడిగే ప్రశ్నలు\s*)?\(?\s*FAQs?\s*\)?\s*<\/h2>/gi,
     ""
   );
-  html = html.replace(
-    /<h2\b[^>]*>[\s\S]*?\bFAQs?\b[\s\S]*?<\/h2>/gi,
-    ""
-  );
+  html = html.replace(/<h2\b[^>]*>[\s\S]*?\bFAQs?\b[\s\S]*?<\/h2>/gi, "");
 
   return {
     bodyHtml: html.trim(),
