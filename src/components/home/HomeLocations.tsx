@@ -2,8 +2,9 @@ import Image from "next/image";
 import { FadeUp } from "@/components/ui/FadeUp";
 import { site } from "@/lib/site";
 
-function mapsHref(address: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+function mapsHref(loc: (typeof site.locations)[number]) {
+  if ("mapUrl" in loc && loc.mapUrl) return loc.mapUrl;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.address)}`;
 }
 
 function PinIcon({ className = "" }: { className?: string }) {
@@ -127,7 +128,7 @@ export function HomeLocations() {
 
                 <div className="loc-mic__actions flex flex-nowrap items-center gap-3">
                   <a
-                    href={mapsHref(loc.address)}
+                    href={mapsHref(loc)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-press inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-[#0B1F18] px-4 text-[10px] font-bold tracking-[0.14em] text-[#EBE8E2] uppercase hover:bg-[#1A3D2E]"

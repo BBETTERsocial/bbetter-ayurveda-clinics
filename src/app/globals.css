@@ -1952,24 +1952,30 @@ html[data-intro="done"] .site-nav-chrome {
   display: none;
   align-items: flex-start;
   gap: 0.45rem;
+  z-index: 0;
 }
 
-@media (min-width: 1024px) {
+/* Decorative sketches only in side gutters on wide screens — avoid mixing with copy */
+@media (min-width: 1600px) {
   .story-mic__anno {
     display: flex;
   }
 }
 
 .story-mic__anno--top {
-  top: 11%;
-  left: 42%;
-  max-width: 11rem;
+  top: 8%;
+  right: max(1rem, calc(50% - 45rem));
+  left: auto;
+  max-width: 8.5rem;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
 }
 
 .story-mic__anno--bottom {
-  bottom: 10%;
-  left: 4%;
-  max-width: 10rem;
+  bottom: 8%;
+  left: max(1rem, calc(50% - 45rem));
+  max-width: 8.5rem;
   flex-direction: column;
 }
 
@@ -1984,12 +1990,7 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .story-mic__script {
-  margin: 0;
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 0.92rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: rgba(40, 36, 30, 0.42);
+  display: none;
 }
 
 .story-mic__arrow {
@@ -2059,30 +2060,35 @@ html[data-intro="done"] .site-nav-chrome {
   display: none;
   align-items: flex-start;
   gap: 0.4rem;
+  z-index: 0;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1600px) {
   .doctors-mic__anno {
     display: flex;
   }
 }
 
 .doctors-mic__anno--tr {
-  top: 8%;
-  right: 5%;
-  max-width: 11rem;
+  top: 7%;
+  right: max(1rem, calc(50% - 45rem));
+  max-width: 8.5rem;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
 }
 
 .doctors-mic__anno--bl {
   bottom: 8%;
-  left: 3%;
+  left: max(1rem, calc(50% - 45rem));
 }
 
 .doctors-mic__anno--bc {
   bottom: 7%;
-  left: 38%;
-  align-items: center;
-  gap: 0.55rem;
+  left: max(1rem, calc(50% - 45rem));
+  align-items: flex-start;
+  gap: 0.45rem;
+  flex-direction: column;
 }
 
 .doctors-mic__sketch {
@@ -2101,12 +2107,7 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .doctors-mic__script {
-  margin: 0;
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: rgba(40, 36, 30, 0.42);
+  display: none;
 }
 
 .doctors-mic__track {
@@ -2579,42 +2580,34 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .how-mic__script {
-  margin: 0;
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 0.92rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: rgba(40, 36, 30, 0.4);
+  display: none;
 }
 
-.how-mic__script--tr {
-  position: absolute;
-  top: 7%;
-  right: 5%;
-  text-align: right;
+.how-mic__script--tr,
+.how-mic__script--br {
+  display: none;
 }
 
 .how-mic__script--quiet {
-  font-size: 0.8rem;
-  color: rgba(40, 36, 30, 0.28);
-}
-
-.how-mic__script--br {
-  position: absolute;
-  right: 4%;
-  bottom: 7%;
-  text-align: right;
+  display: none;
 }
 
 .how-mic__leaf {
+  display: none;
   position: absolute;
   width: 3rem;
   color: rgba(26, 61, 46, 0.28);
 }
 
+@media (min-width: 1600px) {
+  .how-mic__leaf {
+    display: block;
+  }
+}
+
 .how-mic__leaf--tr {
   top: 5%;
-  right: 12%;
+  right: max(1rem, calc(50% - 45rem));
 }
 
 .how-mic__leaf--quiet {
@@ -2623,7 +2616,7 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .how-mic__leaf--br {
-  right: 14%;
+  right: max(1rem, calc(50% - 45rem));
   bottom: 5%;
 }
 
@@ -2927,55 +2920,38 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .why-mic__script {
-  margin: 0;
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: rgba(235, 232, 226, 0.38);
-}
-
-.why-mic__script--tr {
-  position: absolute;
-  top: 7%;
-  right: 5%;
-  text-align: right;
-}
-
-.why-mic__script--mr {
-  position: absolute;
-  top: 42%;
-  right: 3.5%;
-  text-align: right;
-}
-
-.why-mic__script--bl {
-  position: absolute;
-  left: 4%;
-  bottom: 8%;
+  display: none;
 }
 
 .why-mic__botany {
+  display: none;
   position: absolute;
-  width: 7.5rem;
-  color: rgba(235, 232, 226, 0.18);
+  width: 6rem;
+  color: rgba(235, 232, 226, 0.14);
+}
+
+@media (min-width: 1600px) {
+  .why-mic__botany {
+    display: block;
+  }
 }
 
 .why-mic__botany--tr {
-  top: 4%;
-  right: 14%;
-  width: 6.5rem;
+  top: 3%;
+  right: max(1rem, calc(50% - 45rem));
+  width: 5.25rem;
 }
 
 .why-mic__botany--bl {
-  left: 3%;
-  bottom: 14%;
-  width: 8.5rem;
-  color: rgba(45, 90, 69, 0.55);
+  left: max(0.75rem, calc(50% - 45rem));
+  bottom: 12%;
+  width: 6.25rem;
+  color: rgba(45, 90, 69, 0.4);
 }
 
 .why-mic__cards {
   position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 640px) {
@@ -3005,12 +2981,17 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .why-mic__card {
-  padding: 0.15rem 0;
+  position: relative;
+  z-index: 2;
+  padding: 1.1rem 1rem 1.2rem;
+  border-radius: 1rem;
+  /* Solid fill so decorative text never mixes with card copy */
+  background: #0b1f18;
 }
 
 @media (min-width: 640px) {
   .why-mic__card {
-    padding: 0.35rem 0.75rem;
+    padding: 1.2rem 1.15rem 1.35rem;
   }
 }
 
@@ -3218,27 +3199,22 @@ html[data-intro="done"] .site-nav-chrome {
 }
 
 .book-mic__leaf-tr {
+  display: none;
   position: absolute;
   top: 5%;
-  right: 3%;
-  width: 5.5rem;
-  color: rgba(11, 31, 24, 0.22);
+  right: max(1rem, calc(50% - 45rem));
+  width: 5rem;
+  color: rgba(11, 31, 24, 0.2);
+}
+
+@media (min-width: 1600px) {
+  .book-mic__leaf-tr {
+    display: block;
+  }
 }
 
 .book-mic__script {
-  margin: 0;
-  font-family: var(--font-script), "Segoe Script", cursive;
-  font-size: 0.88rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: rgba(40, 36, 30, 0.4);
-}
-
-.book-mic__script--tr {
-  position: absolute;
-  top: 9%;
-  right: 9%;
-  text-align: right;
+  display: none;
 }
 
 .book-mic__contact {
@@ -3630,7 +3606,8 @@ html[data-intro="done"] .site-nav-chrome {
 
 /* -- Content index / article (blog + treatments) -- */
 .content-index__lines,
-.about-page__lines {
+.about-page__lines,
+.contact-page__lines {
   background-image:
     linear-gradient(rgba(40, 36, 30, 0.028) 1px, transparent 1px),
     linear-gradient(90deg, rgba(40, 36, 30, 0.028) 1px, transparent 1px);

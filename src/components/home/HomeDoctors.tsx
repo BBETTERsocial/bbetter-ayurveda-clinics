@@ -85,8 +85,8 @@ export function HomeDoctors() {
         <div className="doctors-mic__lines" />
       </div>
 
-      {/* Decorative sketches */}
-      <div className="doctors-mic__decor pointer-events-none absolute inset-0 z-[1]" aria-hidden>
+      {/* Decorative sketches — outer gutters only, no script notes over copy */}
+      <div className="doctors-mic__decor pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="doctors-mic__anno doctors-mic__anno--tr">
           <svg className="doctors-mic__sketch" viewBox="0 0 120 90" fill="none">
             <path
@@ -96,11 +96,6 @@ export function HomeDoctors() {
             />
             <path d="M52 55 C68 40 90 28 108 24" stroke="currentColor" strokeWidth="0.9" />
           </svg>
-          <p className="doctors-mic__script">
-            Swasthya Seva
-            <br />
-            Sampurna Jeevan
-          </p>
         </div>
 
         <div className="doctors-mic__anno doctors-mic__anno--bl">
@@ -124,11 +119,6 @@ export function HomeDoctors() {
             <path d="M22 30c0-4 3-8 10-8s10 4 10 8" stroke="currentColor" strokeWidth="1.1" />
             <path d="M28 14l2 12M34 12l-2 14" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
           </svg>
-          <p className="doctors-mic__script">
-            Rooted in Ayurveda
-            <br />
-            Guided by Science
-          </p>
         </div>
       </div>
 

@@ -5,8 +5,8 @@ function BulletList({ items }: { items: readonly string[] }) {
   return (
     <ul className="about-page__list mt-4 space-y-2.5">
       {items.map((item) => (
-        <li key={item} className="flex gap-2.5 text-[15px] leading-snug text-black">
-          <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0B1F18]" aria-hidden />
+        <li key={item} className="flex gap-2.5 text-[15px] leading-snug text-[#252B28]">
+          <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0B2A22]" aria-hidden />
           <span>{item}</span>
         </li>
       ))}
@@ -25,29 +25,29 @@ export function AboutContent() {
           <p className="text-[11px] font-semibold tracking-[0.28em] text-[#B5985A] uppercase">
             About Us
           </p>
-          <h1 className="font-display mt-3 text-[2.2rem] leading-[1.1] font-semibold tracking-tight text-[#0B1F18] sm:text-4xl lg:text-[2.75rem]">
+          <h1 className="font-display mt-3 text-[2.2rem] leading-[1.1] font-semibold tracking-tight text-[#0B2A22] sm:text-4xl lg:text-[2.75rem]">
             BBETTER Ayurveda
           </h1>
         </FadeUp>
 
         <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-14">
           <FadeUp>
-            <h2 className="font-display text-[1.65rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.85rem]">
+            <h2 className="font-display text-[1.65rem] font-semibold tracking-tight text-[#0B2A22] sm:text-[1.85rem]">
               {site.story.title}
             </h2>
-            <p className="mt-4 text-[15.5px] leading-[1.8] text-black sm:text-base">
+            <p className="mt-4 text-[15.5px] leading-[1.8] text-[#252B28] sm:text-base">
               {site.story.body}
             </p>
-            <p className="mt-4 text-[15.5px] leading-[1.8] text-black sm:text-base">
+            <p className="mt-4 text-[15.5px] leading-[1.8] text-[#252B28] sm:text-base">
               {site.story.focus}
             </p>
           </FadeUp>
 
           <FadeUp delay={80}>
-            <h2 className="font-display text-[1.65rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.85rem]">
+            <h2 className="font-display text-[1.65rem] font-semibold tracking-tight text-[#0B2A22] sm:text-[1.85rem]">
               {site.missionFull.title}
             </h2>
-            <p className="mt-4 text-[15.5px] leading-[1.8] text-black sm:text-base">
+            <p className="mt-4 text-[15.5px] leading-[1.8] text-[#252B28] sm:text-base">
               {site.missionFull.body}
             </p>
 
@@ -64,24 +64,24 @@ export function AboutContent() {
 
         <div className="mt-16 grid gap-10 border-t border-[#1A3D2E]/12 pt-12 sm:mt-20 sm:pt-14 md:grid-cols-3 md:gap-8 lg:gap-10">
           <FadeUp>
-            <h2 className="font-display text-[1.25rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.35rem]">
+            <h2 className="font-display text-[1.25rem] font-semibold tracking-tight text-[#0B2A22] sm:text-[1.35rem]">
               {site.aboutApproach.title}
             </h2>
             <BulletList items={site.aboutApproach.items} />
           </FadeUp>
 
           <FadeUp delay={60}>
-            <h2 className="font-display text-[1.25rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.35rem]">
+            <h2 className="font-display text-[1.25rem] font-semibold tracking-tight text-[#0B2A22] sm:text-[1.35rem]">
               {site.aboutScope.title}
             </h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-black">
+            <p className="mt-4 text-[15px] leading-relaxed text-[#252B28]">
               {site.aboutScope.lead}
             </p>
             <BulletList items={site.aboutScope.items} />
           </FadeUp>
 
           <FadeUp delay={120}>
-            <h2 className="font-display text-[1.25rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.35rem]">
+            <h2 className="font-display text-[1.25rem] font-semibold tracking-tight text-[#0B2A22] sm:text-[1.35rem]">
               {site.aboutPathway.title}
             </h2>
             <BulletList items={site.aboutPathway.items} />

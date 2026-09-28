@@ -164,8 +164,8 @@ export function HomeBooking() {
     >
       <div className="book-mic__wash absolute inset-0" aria-hidden />
 
-      <div className="book-mic__decor pointer-events-none absolute inset-0 z-[1]" aria-hidden>
-        <svg className="book-mic__leaf-tr hidden lg:block" viewBox="0 0 120 140" fill="none">
+      <div className="book-mic__decor pointer-events-none absolute inset-0 z-0" aria-hidden>
+        <svg className="book-mic__leaf-tr" viewBox="0 0 120 140" fill="none">
           <path
             d="M58 128 C52 90 28 68 18 28 C38 42 48 72 58 102 C66 70 84 36 108 22 C88 58 72 92 58 128 Z"
             stroke="currentColor"
@@ -173,11 +173,6 @@ export function HomeBooking() {
           />
           <path d="M58 128 V42" stroke="currentColor" strokeWidth="0.9" />
         </svg>
-        <p className="book-mic__script book-mic__script--tr hidden lg:block">
-          Healing Through
-          <br />
-          Nature
-        </p>
       </div>
 
       <div className="relative z-[2] mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:px-8 sm:py-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-10 lg:px-10 lg:py-16 xl:max-w-[88rem]">

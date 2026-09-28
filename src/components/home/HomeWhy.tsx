@@ -161,24 +161,9 @@ export function HomeWhy() {
         <div className="why-mic__lines" />
       </div>
 
-      <div className="why-mic__decor pointer-events-none absolute inset-0 z-[1]" aria-hidden>
-        <LeafCluster className="why-mic__botany why-mic__botany--tr hidden lg:block" />
-        <p className="why-mic__script why-mic__script--tr hidden lg:block">
-          Ancient Wisdom
-          <br />
-          Modern Care
-        </p>
-        <p className="why-mic__script why-mic__script--mr hidden lg:block">
-          Personalised Care
-          <br />
-          Better Tomorrow
-        </p>
-        <LeafCluster className="why-mic__botany why-mic__botany--bl hidden lg:block" />
-        <p className="why-mic__script why-mic__script--bl hidden lg:block">
-          Healing Through
-          <br />
-          Nature
-        </p>
+      <div className="why-mic__decor pointer-events-none absolute inset-0 z-0" aria-hidden>
+        <LeafCluster className="why-mic__botany why-mic__botany--tr" />
+        <LeafCluster className="why-mic__botany why-mic__botany--bl" />
       </div>
 
       <div className="relative z-[2] mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-16 lg:px-10 lg:py-20 xl:max-w-[88rem]">

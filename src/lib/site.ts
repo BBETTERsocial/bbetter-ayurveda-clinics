@@ -18,7 +18,7 @@ export const site = {
     subtitle: "Customized care for your unique body.",
   },
   aboutApproach: {
-    title: "What Makes the Approach Different",
+    title: "Our Approach",
     items: [
       "Consultation-first model",
       "Personalized Ayurveda care planning",
@@ -78,6 +78,10 @@ export const site = {
       phoneHref: "tel:8019578877",
       /** Set to "/images/locations/kukatpally.jpg" after dropping the photo. */
       image: "/images/locations/kukatpally.jpg",
+      mapUrl:
+        "https://www.google.com/maps/place/BBETTER+Ayurveda+Clinic/@17.4862307,78.3993334,17z/data=!4m6!3m5!1s0x3bcb910017e33677:0x125be56d8d8f58fb!8m2!3d17.4862307!4d78.3993334!16s%2Fg%2F11xz2_nzt5",
+      mapEmbed:
+        "https://www.google.com/maps?q=BBETTER+Ayurveda+Clinic+Kukatpally+Hyderabad&ll=17.4862307,78.3993334&z=16&output=embed",
     },
     {
       name: "Nallagandla",
@@ -87,6 +91,10 @@ export const site = {
       phoneHref: "tel:9247953637",
       /** Set to "/images/locations/nallagandla.jpg" after dropping the photo. */
       image: "/images/locations/nallagandla.jpg",
+      mapUrl:
+        "https://www.google.com/maps/place/BBETTER+AYURVEDA+CLINIC+%7C+NALLAGANDLA/@17.467532,78.3070403,17z/data=!4m6!3m5!1s0x3bcb939c108ff637:0x409e5bcaf2b6a29a!8m2!3d17.467532!4d78.3070403!16s%2Fg%2F11z8phmnvr",
+      mapEmbed:
+        "https://www.google.com/maps?q=BBETTER+AYURVEDA+CLINIC+NALLAGANDLA&ll=17.467532,78.3070403&z=16&output=embed",
     },
   ],
   stats: [
@@ -130,6 +138,7 @@ export const site = {
     { href: "/therapies", label: "Therapies" },
     { href: "/treatments", label: "Treatments" },
     { href: "/blog", label: "Blog" },
+    { href: "/contact", label: "Contact Us" },
   ],
   why: [
     {
@@ -284,6 +293,7 @@ export const site = {
     { href: "/therapies", label: "Therapies" },
     { href: "/treatments", label: "Treatments" },
     { href: "/blog", label: "Blog" },
+    { href: "/contact", label: "Contact Us" },
     { href: "/#faq", label: "FAQ" },
     { href: "/#book", label: "Book" },
   ],

@@ -86,8 +86,8 @@ export function HomeStory() {
         <div className="story-mic__lines" />
       </div>
 
-      {/* Decorative leaf sketches + handwritten notes */}
-      <div className="story-mic__decor pointer-events-none absolute inset-0 z-[1]" aria-hidden>
+      {/* Decorative leaf sketches — outer gutters only, no script notes over copy */}
+      <div className="story-mic__decor pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="story-mic__anno story-mic__anno--top">
           <svg className="story-mic__sketch" viewBox="0 0 120 90" fill="none">
             <path
@@ -106,11 +106,6 @@ export function HomeStory() {
               strokeWidth="0.85"
             />
           </svg>
-          <p className="story-mic__script">
-            Ancient Knowledge
-            <br />
-            Modern Life
-          </p>
         </div>
 
         <div className="story-mic__anno story-mic__anno--bottom">
@@ -126,7 +121,6 @@ export function HomeStory() {
               strokeWidth="0.9"
             />
           </svg>
-          <p className="story-mic__script">Healing Through Nature</p>
         </div>
       </div>
 
@@ -140,21 +134,21 @@ export function HomeStory() {
             <div className="mt-3 h-px w-14 bg-[#B5985A]/70" aria-hidden />
             <h2
               id="our-story-heading"
-              className="font-display mt-4 text-[2.15rem] leading-[1.1] font-semibold tracking-tight text-[#0B1F18] sm:text-4xl lg:text-[2.85rem]"
+              className="font-display mt-4 text-[2.15rem] leading-[1.1] font-semibold tracking-tight text-[#0B2A22] sm:text-4xl lg:text-[2.85rem]"
             >
               {site.story.title}
             </h2>
-            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-black sm:text-[16.5px]">
+            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-[#252B28] sm:text-[16.5px]">
               {site.story.body}
             </p>
-            <p className="mt-4 max-w-xl text-[15.5px] leading-[1.8] text-black sm:text-[16.5px]">
+            <p className="mt-4 max-w-xl text-[15.5px] leading-[1.8] text-[#252B28] sm:text-[16.5px]">
               {site.story.focus}
             </p>
 
-            <h3 className="font-display mt-8 text-[1.35rem] font-semibold tracking-tight text-[#0B1F18] sm:text-[1.5rem]">
+            <h3 className="font-display mt-8 text-[1.35rem] font-semibold tracking-tight text-[#0B2A22] sm:text-[1.5rem]">
               {site.missionFull.title}
             </h3>
-            <p className="mt-3 max-w-xl text-[15.5px] leading-[1.8] text-black sm:text-[16.5px]">
+            <p className="mt-3 max-w-xl text-[15.5px] leading-[1.8] text-[#252B28] sm:text-[16.5px]">
               {site.missionFull.body}
             </p>
 

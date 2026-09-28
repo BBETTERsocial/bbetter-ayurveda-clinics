@@ -3,13 +3,13 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 
 const explore = site.footerNav.filter((item) =>
-  ["Home", "About Us", "Therapies", "Treatments", "Blog"].includes(item.label)
+  ["Home", "About Us", "Therapies", "Treatments", "Blog", "Contact Us"].includes(item.label)
 );
 
 const visit = [
-  { href: "/#locations", label: "Locations" },
-  { href: "/#kukatpally", label: "Kukatpally" },
-  { href: "/#nallagandla", label: "Nallagandla" },
+  { href: "/contact", label: "Locations" },
+  { href: "/contact#kukatpally", label: "Kukatpally" },
+  { href: "/contact#nallagandla", label: "Nallagandla" },
   { href: "/#book", label: "Book" },
   { href: "/#faq", label: "FAQ" },
 ];
