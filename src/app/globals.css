@@ -2176,250 +2176,215 @@ textarea:focus-visible {
   display: none;
 }
 
-.doctors-mic__track {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scroll-snap-type: x mandatory;
+/* Portrait roster — equal-height cards, CTAs locked to one baseline */
+.doctors-mic__roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
 }
 
-.doctors-mic__track::-webkit-scrollbar {
-  display: none;
+@media (min-width: 720px) {
+  .doctors-mic__roster {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.35rem 1.5rem;
+    align-items: stretch;
+  }
+}
+
+@media (min-width: 1024px) {
+  .doctors-mic__roster {
+    gap: 1.5rem 2rem;
+  }
+}
+
+.doctors-mic__roster > li {
+  display: flex;
+  min-height: 0;
 }
 
 .doctors-mic__card {
-  width: min(100%, 22.5rem);
-}
-
-@media (min-width: 768px) {
-  .doctors-mic__card {
-    width: auto;
-  }
-}
-
-.doctors-mic__card-inner {
-  display: grid;
-  grid-template-columns: 8.75rem minmax(0, 1fr);
-  min-height: 17.5rem;
-  overflow: hidden;
-  border-radius: 1.35rem;
-  background: #f4f0e8;
-  box-shadow: 0 18px 40px rgba(11, 31, 24, 0.1);
-}
-
-@media (min-width: 640px) {
-  .doctors-mic__card-inner {
-    grid-template-columns: 10rem minmax(0, 1fr);
-    min-height: 18.5rem;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
 }
 
 .doctors-mic__portrait {
   position: relative;
+  flex-shrink: 0;
+}
+
+.doctors-mic__photo-frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 1.15rem;
+  background: #0b1f18;
+  box-shadow: 0 18px 40px rgba(11, 31, 24, 0.12);
+}
+
+.doctors-mic__branch-tag {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  border-radius: 999px;
+  background: rgba(247, 241, 230, 0.94);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0b2a22;
+}
+
+.doctors-mic__photo-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* Wireframe placeholder until real photos drop in */
+.doctors-mic__wire {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.85rem;
-  padding: 1.35rem 0.85rem 1.15rem;
-  background: #0b1f18;
-  color: #ebe8e2;
+  justify-content: center;
+  gap: 0.65rem;
+  background:
+    linear-gradient(165deg, #1a3d2e 0%, #0b1f18 55%, #07150f 100%);
 }
 
-.doctors-mic__arch {
+.doctors-mic__wire::before {
+  content: "";
   position: absolute;
-  inset: 0.85rem 0.7rem auto;
-  height: 62%;
-  border-radius: 999px 999px 0.35rem 0.35rem;
-  background: rgba(255, 255, 255, 0.04);
-  overflow: hidden;
+  inset: 0.85rem;
+  border: 1px dashed rgba(235, 232, 226, 0.22);
+  border-radius: 0.85rem;
+  pointer-events: none;
 }
 
-.doctors-mic__arch-leaf {
+.doctors-mic__wire-badge {
   position: absolute;
-  inset: 12% 18% auto;
-  width: 64%;
-  opacity: 0.22;
-  color: #ebe8e2;
+  top: 1.15rem;
+  left: 1.15rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(232, 212, 139, 0.75);
+  font-variant-numeric: tabular-nums;
 }
 
-.doctors-mic__photo {
+.doctors-mic__wire-initial {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  width: 5.75rem;
-  height: 7.25rem;
-  overflow: hidden;
-  border-radius: 999px 999px 0.25rem 0.25rem;
-  background: linear-gradient(180deg, #2d5a45 0%, #0b1f18 100%);
-}
-
-@media (min-width: 640px) {
-  .doctors-mic__photo {
-    width: 6.5rem;
-    height: 8.25rem;
-  }
-}
-
-.doctors-mic__initial {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.25rem;
+  font-size: clamp(3.25rem, 8vw, 4.5rem);
   font-weight: 600;
+  line-height: 1;
   color: #e8d48b;
 }
 
-.doctors-mic__portrait-name {
+.doctors-mic__wire-label {
   position: relative;
   z-index: 1;
-  margin: 0;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(235, 232, 226, 0.78);
+  color: rgba(235, 232, 226, 0.45);
 }
 
-.doctors-mic__detail {
+.doctors-mic__body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 1.15rem 1rem 1.2rem 1.1rem;
+  flex: 1 1 auto;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.2rem 0.1rem 0;
+  min-height: 11.5rem;
 }
 
-@media (min-width: 640px) {
-  .doctors-mic__detail {
-    padding: 1.4rem 1.35rem 1.4rem 1.45rem;
-  }
-}
-
-.doctors-mic__name {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 600;
-  line-height: 1.15;
-  color: #0b1f18;
-}
-
-@media (min-width: 640px) {
-  .doctors-mic__name {
-    font-size: 1.55rem;
-  }
+.doctors-mic__copy {
+  display: flex;
+  flex-direction: column;
 }
 
 .doctors-mic__cred {
-  margin: 0.35rem 0 0;
-  font-size: 0.62rem;
+  margin: 0;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #b5985a;
 }
 
-.doctors-mic__rule {
-  width: 100%;
-  height: 1px;
-  margin: 0.75rem 0;
-  background: rgba(26, 61, 46, 0.12);
-}
-
-.doctors-mic__study {
-  margin: 0;
-  font-size: 0.72rem;
-  color: #000000;
-}
-
-.doctors-mic__study span {
+.doctors-mic__name {
+  margin: 0.4rem 0 0;
+  font-size: 1.35rem;
   font-weight: 600;
-  color: rgba(26, 61, 46, 0.75);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #0b2a22;
 }
 
-.doctors-mic__skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0.75rem 0 0;
-  padding: 0;
-  list-style: none;
+@media (min-width: 1024px) {
+  .doctors-mic__name {
+    font-size: 1.5rem;
+  }
 }
 
-.doctors-mic__skills li {
-  border-radius: 999px;
-  background: rgba(181, 152, 90, 0.14);
-  padding: 0.28rem 0.65rem;
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: #1a3d2e;
+.doctors-mic__rule {
+  width: 2.25rem;
+  height: 1px;
+  margin: 0.85rem 0;
+  background: rgba(181, 152, 90, 0.7);
 }
 
-.doctors-mic__focus {
-  margin: 0.85rem 0 0;
-  font-size: 0.78rem;
-  line-height: 1.45;
-  color: #000000;
+.doctors-mic__meta {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
 }
 
-.doctors-mic__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.95rem;
-  width: fit-content;
-  border-bottom: 1px solid rgba(11, 31, 24, 0.35);
-  padding-bottom: 0.1rem;
+.doctors-mic__meta div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.doctors-mic__meta dt {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #0b1f18;
-  transition: color 0.25s ease, border-color 0.25s ease;
+  color: rgba(11, 42, 34, 0.55);
 }
 
-.doctors-mic__cta:hover {
-  color: #006b56;
-  border-color: rgba(0, 107, 86, 0.45);
+.doctors-mic__meta dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0b2a22;
 }
 
-.doctors-mic__nav {
-  display: inline-flex;
-  height: 2.65rem;
-  width: 2.65rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  transition:
-    background-color 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.25s var(--ease-out-soft);
+.doctors-mic__cta {
+  flex-shrink: 0;
+  align-self: flex-start;
+  line-height: 1;
 }
 
-.doctors-mic__nav--prev {
-  border: 1px solid rgba(26, 61, 46, 0.28);
-  background: #f7f1e6;
-  color: #0b1f18;
-}
-
-.doctors-mic__nav--prev:hover {
-  border-color: rgba(26, 61, 46, 0.5);
-  background: #fff;
-}
-
-.doctors-mic__nav--next {
-  border: 1px solid #0b1f18;
-  background: #0b1f18;
-  color: #ebe8e2;
-}
-
-.doctors-mic__nav--next:hover {
-  background: #1a3d2e;
-}
-
-.doctors-mic__nav:active {
-  transform: scale(0.96);
+@media (prefers-reduced-motion: no-preference) {
+  .doctors-mic__photo-img {
+    transition: transform 0.7s var(--ease-out-soft);
+  }
+  .doctors-mic__card:hover .doctors-mic__photo-img {
+    transform: scale(1.04);
+  }
 }
 
 /* ── Therapies service cards — 3 up / 3 down grid ── */

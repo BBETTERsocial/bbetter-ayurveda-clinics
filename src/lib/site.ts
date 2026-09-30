@@ -103,33 +103,28 @@ export const site = {
     { value: "10+", label: "Treatments" },
     { value: "MD Doctors", label: "Certified Experts" },
   ],
-  /** Placeholder doctors — replace with final verified bios + photos. */
+  /** Replace image paths with final photos when ready (e.g. /images/doctors/name.jpg). */
   doctors: [
     {
       name: "Dr. Madhuri",
       credential: "MD Ayurveda",
-      study: "BAMS · MD (Ayurveda)",
-      skills: [
-        "Ayurvedic consultation",
-        "Panchakarma guidance",
-        "Personalised care plans",
-      ],
-      focus:
-        "Focused on authentic diagnosis and personalised treatments for lasting wellness.",
-      image: "",
+      branch: "Kukatpally",
+      experience: "9+ years",
+      image: "/images/doctors/Madhuri.png",
     },
     {
       name: "Dr. Deepa",
       credential: "MD Ayurveda",
-      study: "BAMS · MD (Ayurveda)",
-      skills: [
-        "Classical therapies",
-        "Herbal medicine",
-        "Holistic lifestyle advice",
-      ],
-      focus:
-        "Specialises in classical Ayurvedic therapies and natural healing approaches.",
-      image: "",
+      branch: "Kukatpally",
+      experience: "9+ years",
+      image: "/images/doctors/Deepa.png",
+    },
+    {
+      name: "Dr. Gayatri",
+      credential: "MD Ayurveda",
+      branch: "Nallagandla",
+      experience: "13+ years",
+      image: "/images/doctors/Gayatri.png",
     },
   ],
   nav: [
