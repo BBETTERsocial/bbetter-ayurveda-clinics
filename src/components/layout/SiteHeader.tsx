@@ -134,33 +134,33 @@ export function SiteHeader({
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={[
-                      "nav-link font-display inline-flex items-center gap-1 text-[0.8rem] tracking-[0.04em] transition-colors",
+                      "nav-link font-display inline-flex items-center gap-1 text-[0.875rem] font-semibold tracking-[0.03em] transition-colors",
                       active
-                        ? "is-active text-[#006B56]"
-                        : "text-[#1A1A1A]/70 group-hover:text-[#006B56]",
+                        ? "is-active text-[#0B2A22]"
+                        : "text-[#0B1F18] group-hover:text-[#006B56]",
                     ].join(" ")}
                   >
                     {item.label}
                     <svg
                       viewBox="0 0 12 12"
-                      className="h-2.5 w-2.5 opacity-60 transition-transform duration-200 group-hover:rotate-180"
+                      className="h-2.5 w-2.5 opacity-80 transition-transform duration-200 group-hover:rotate-180"
                       fill="none"
                       aria-hidden
                     >
                       <path
                         d="M2.5 4.5 6 8l3.5-3.5"
                         stroke="currentColor"
-                        strokeWidth="1.4"
+                        strokeWidth="1.6"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                     </svg>
                   </AppLink>
                   <div className="nav-dropdown__panel pointer-events-none invisible absolute top-full left-1/2 z-50 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
-                    <div className="nav-dropdown__menu max-h-[min(70vh,28rem)] w-[min(92vw,22rem)] -translate-x-1/2 overflow-y-auto rounded-xl border border-[#1A3D2E]/10 bg-[#F7F1E6] py-2 shadow-[0_18px_40px_rgba(11,31,24,0.14)]">
+                    <div className="nav-dropdown__menu max-h-[min(70vh,28rem)] w-[min(92vw,22rem)] -translate-x-1/2 overflow-y-auto rounded-xl border border-[#1A3D2E]/12 bg-[#F7F1E6] py-2 shadow-[0_18px_40px_rgba(11,31,24,0.14)]">
                       <Link
                         href="/treatments"
-                        className="block px-4 py-2.5 text-[11px] font-bold tracking-[0.14em] text-[#B5985A] uppercase hover:bg-[#1A3D2E]/05"
+                        className="block px-4 py-2.5 text-[12px] font-bold tracking-[0.14em] text-[#8A7340] uppercase hover:bg-[#1A3D2E]/05"
                       >
                         All treatments
                       </Link>
@@ -174,10 +174,10 @@ export function SiteHeader({
                               <Link
                                 href={href}
                                 className={[
-                                  "block px-4 py-2.5 text-[13px] leading-snug transition-colors hover:bg-[#1A3D2E]/06 hover:text-[#006B56]",
+                                  "block px-4 py-2.5 text-[14px] font-semibold leading-snug transition-colors hover:bg-[#1A3D2E]/06 hover:text-[#006B56]",
                                   itemActive
-                                    ? "font-semibold text-[#006B56]"
-                                    : "text-[#0B2A22]",
+                                    ? "font-bold text-[#006B56]"
+                                    : "text-[#0B1F18]",
                                 ].join(" ")}
                               >
                                 {t.title}
@@ -198,10 +198,10 @@ export function SiteHeader({
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "nav-link font-display text-[0.8rem] tracking-[0.04em] transition-colors",
+                  "nav-link font-display text-[0.875rem] font-semibold tracking-[0.03em] transition-colors",
                   active
-                    ? "is-active text-[#006B56]"
-                    : "text-[#1A1A1A]/70 hover:text-[#006B56]",
+                    ? "is-active text-[#0B2A22]"
+                    : "text-[#0B1F18] hover:text-[#006B56]",
                 ].join(" ")}
               >
                 {item.label}
@@ -287,8 +287,8 @@ export function SiteHeader({
                       onClick={() => setMobileTreatmentsOpen((v) => !v)}
                       aria-expanded={mobileTreatmentsOpen}
                       className={[
-                        "flex w-full items-center justify-between border-b border-[#1A3D2E]/8 py-3.5 text-left text-[13px] font-semibold tracking-[0.14em] uppercase",
-                        active ? "text-[#006B56]" : "text-[#1A1A1A]",
+                        "flex w-full items-center justify-between border-b border-[#1A3D2E]/8 py-3.5 text-left text-[14px] font-bold tracking-[0.12em] uppercase",
+                        active ? "text-[#006B56]" : "text-[#0B1F18]",
                       ].join(" ")}
                     >
                       {item.label}
@@ -316,7 +316,7 @@ export function SiteHeader({
                           <AppLink
                             href="/treatments"
                             onClick={closeMenu}
-                            className="block py-2.5 pl-3 text-[12px] font-semibold tracking-[0.08em] text-[#B5985A] uppercase"
+                            className="block py-2.5 pl-3 text-[12px] font-bold tracking-[0.08em] text-[#8A7340] uppercase"
                           >
                             All treatments
                           </AppLink>
@@ -326,7 +326,7 @@ export function SiteHeader({
                             <AppLink
                               href={`/treatments/${encodeURIComponent(t.slug)}`}
                               onClick={closeMenu}
-                              className="block py-2 pl-3 text-[13px] leading-snug text-[#0B2A22]"
+                              className="block py-2.5 pl-3 text-[14px] font-semibold leading-snug text-[#0B1F18]"
                             >
                               {t.title}
                             </AppLink>
@@ -345,8 +345,8 @@ export function SiteHeader({
                     onClick={closeMenu}
                     aria-current={active ? "page" : undefined}
                     className={[
-                      "flex items-center gap-2.5 border-b border-[#1A3D2E]/8 py-3.5 text-[13px] font-semibold tracking-[0.14em] uppercase transition-colors",
-                      active ? "text-[#006B56]" : "text-[#1A1A1A]",
+                      "flex items-center gap-2.5 border-b border-[#1A3D2E]/8 py-3.5 text-[14px] font-bold tracking-[0.12em] uppercase transition-colors",
+                      active ? "text-[#006B56]" : "text-[#0B1F18]",
                     ].join(" ")}
                   >
                     <span
@@ -365,7 +365,7 @@ export function SiteHeader({
               <AppLink
                 href="/#faq"
                 onClick={closeMenu}
-                className="flex items-center gap-2.5 border-b border-[#1A3D2E]/8 py-3.5 text-[13px] font-semibold tracking-[0.14em] text-[#1A1A1A] uppercase"
+                className="flex items-center gap-2.5 border-b border-[#1A3D2E]/8 py-3.5 text-[14px] font-bold tracking-[0.12em] text-[#0B1F18] uppercase"
               >
                 FAQ
               </AppLink>
