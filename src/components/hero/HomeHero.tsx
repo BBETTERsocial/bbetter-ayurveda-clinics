@@ -114,40 +114,37 @@ export function HomeHero() {
 
   const introDone = phase === "done" || reduceMotion;
 
-  /* Scroll depart — only after soft details finish fading in */
+  /* Scroll depart — sync with Lenis via rAF; unlock soon after intro settles */
   useEffect(() => {
     if (!introDone || reduceMotion) return;
     const el = sectionRef.current;
     if (!el) return;
 
-    let ticking = false;
+    /* Short buffer so title/notes finish settling — not long enough to miss first scroll */
     const readyTimer = window.setTimeout(() => {
       el.classList.add("is-ready");
-    }, 2800);
+    }, 500);
 
     const update = () => {
-      ticking = false;
       const rect = el.getBoundingClientRect();
       const range = Math.max(window.innerHeight * 0.7, el.offsetHeight * 0.65);
       const p = Math.min(1, Math.max(0, -rect.top / range));
       el.style.setProperty("--hero-p", p.toFixed(4));
-      /* Don't force opacity until scroll — otherwise intro fades get snapped */
       el.classList.toggle("is-leaving", p > 0.002);
     };
 
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
+    let frame = 0;
+    const tick = () => {
+      update();
+      frame = requestAnimationFrame(tick);
     };
+    frame = requestAnimationFrame(tick);
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
     return () => {
       window.clearTimeout(readyTimer);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", update);
       el.classList.remove("is-ready", "is-leaving");
       el.style.removeProperty("--hero-p");
     };
@@ -168,7 +165,6 @@ export function HomeHero() {
       ref={sectionRef}
       id="top"
       className="hero-mic relative isolate overflow-hidden bg-[#EBE8E2] text-[#006B56]"
-      style={{ ["--hero-p" as string]: 0 }}
     >
       <div className={`${gridZoom} absolute inset-0`} aria-hidden>
         <div className="hero-grid__paper" />
