@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { site } from "@/lib/site";
 
+export type NavTreatment = { title: string; slug: string };
+
 /** Hash anchors must be plain <a> — Next Link doubles #our-story#our-story. */
 function AppLink({
   href,
@@ -19,6 +21,7 @@ function AppLink({
   onClick?: () => void;
   children: ReactNode;
   "aria-label"?: string;
+  "aria-current"?: "page";
 }) {
   if (href.includes("#")) {
     return (
@@ -34,7 +37,6 @@ function AppLink({
   );
 }
 
-/** Highlight the current section in the nav. Root only matches exactly. */
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   const base = href.split("#")[0];
@@ -42,10 +44,14 @@ function isActivePath(pathname: string, href: string) {
   return pathname === base || pathname.startsWith(`${base}/`);
 }
 
-/** Quiet brand mark — does not compete with hero type. */
-export function SiteHeader() {
+export function SiteHeader({
+  treatments = [],
+}: {
+  treatments?: NavTreatment[];
+}) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileTreatmentsOpen, setMobileTreatmentsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -55,7 +61,6 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Non-home pages: no splash — show full nav immediately */
   useEffect(() => {
     if (pathname !== "/") {
       document.documentElement.dataset.intro = "nav";
@@ -71,7 +76,10 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setMobileTreatmentsOpen(false);
+  };
 
   return (
     <header
@@ -117,6 +125,73 @@ export function SiteHeader() {
         >
           {site.nav.map((item) => {
             const active = isActivePath(pathname, item.href);
+            const isTreatments = item.href === "/treatments";
+
+            if (isTreatments && treatments.length > 0) {
+              return (
+                <div key={item.href} className="nav-dropdown group relative">
+                  <AppLink
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={[
+                      "nav-link font-display inline-flex items-center gap-1 text-[0.8rem] tracking-[0.04em] transition-colors",
+                      active
+                        ? "is-active text-[#006B56]"
+                        : "text-[#1A1A1A]/70 group-hover:text-[#006B56]",
+                    ].join(" ")}
+                  >
+                    {item.label}
+                    <svg
+                      viewBox="0 0 12 12"
+                      className="h-2.5 w-2.5 opacity-60 transition-transform duration-200 group-hover:rotate-180"
+                      fill="none"
+                      aria-hidden
+                    >
+                      <path
+                        d="M2.5 4.5 6 8l3.5-3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </AppLink>
+                  <div className="nav-dropdown__panel pointer-events-none invisible absolute top-full left-1/2 z-50 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+                    <div className="nav-dropdown__menu max-h-[min(70vh,28rem)] w-[min(92vw,22rem)] -translate-x-1/2 overflow-y-auto rounded-xl border border-[#1A3D2E]/10 bg-[#F7F1E6] py-2 shadow-[0_18px_40px_rgba(11,31,24,0.14)]">
+                      <Link
+                        href="/treatments"
+                        className="block px-4 py-2.5 text-[11px] font-bold tracking-[0.14em] text-[#B5985A] uppercase hover:bg-[#1A3D2E]/05"
+                      >
+                        All treatments
+                      </Link>
+                      <div className="mx-4 my-1 h-px bg-[#1A3D2E]/10" aria-hidden />
+                      <ul>
+                        {treatments.map((t) => {
+                          const href = `/treatments/${encodeURIComponent(t.slug)}`;
+                          const itemActive = pathname === href || pathname.endsWith(`/${t.slug}`);
+                          return (
+                            <li key={t.slug}>
+                              <Link
+                                href={href}
+                                className={[
+                                  "block px-4 py-2.5 text-[13px] leading-snug transition-colors hover:bg-[#1A3D2E]/06 hover:text-[#006B56]",
+                                  itemActive
+                                    ? "font-semibold text-[#006B56]"
+                                    : "text-[#0B2A22]",
+                                ].join(" ")}
+                              >
+                                {t.title}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <AppLink
                 key={item.href}
@@ -200,11 +275,69 @@ export function SiteHeader() {
           className="site-nav-chrome pointer-events-auto mx-4 mt-1 max-h-[min(80svh,32rem)] overflow-y-auto rounded-2xl border border-[#1A3D2E]/10 bg-[#EBE8E2] px-5 pt-2 pb-5 shadow-lg lg:hidden"
         >
           <ul>
-            {[
-              ...site.nav,
-              { href: "/#faq", label: "FAQ" },
-            ].map((item) => {
+            {site.nav.map((item) => {
               const active = isActivePath(pathname, item.href);
+              const isTreatments = item.href === "/treatments";
+
+              if (isTreatments && treatments.length > 0) {
+                return (
+                  <li key={item.href}>
+                    <button
+                      type="button"
+                      onClick={() => setMobileTreatmentsOpen((v) => !v)}
+                      aria-expanded={mobileTreatmentsOpen}
+                      className={[
+                        "flex w-full items-center justify-between border-b border-[#1A3D2E]/8 py-3.5 text-left text-[13px] font-semibold tracking-[0.14em] uppercase",
+                        active ? "text-[#006B56]" : "text-[#1A1A1A]",
+                      ].join(" ")}
+                    >
+                      {item.label}
+                      <svg
+                        viewBox="0 0 12 12"
+                        className={[
+                          "h-3 w-3 transition-transform",
+                          mobileTreatmentsOpen ? "rotate-180" : "",
+                        ].join(" ")}
+                        fill="none"
+                        aria-hidden
+                      >
+                        <path
+                          d="M2.5 4.5 6 8l3.5-3.5"
+                          stroke="currentColor"
+                          strokeWidth="1.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    {mobileTreatmentsOpen ? (
+                      <ul className="mb-1 border-b border-[#1A3D2E]/8 pb-2">
+                        <li>
+                          <AppLink
+                            href="/treatments"
+                            onClick={closeMenu}
+                            className="block py-2.5 pl-3 text-[12px] font-semibold tracking-[0.08em] text-[#B5985A] uppercase"
+                          >
+                            All treatments
+                          </AppLink>
+                        </li>
+                        {treatments.map((t) => (
+                          <li key={t.slug}>
+                            <AppLink
+                              href={`/treatments/${encodeURIComponent(t.slug)}`}
+                              onClick={closeMenu}
+                              className="block py-2 pl-3 text-[13px] leading-snug text-[#0B2A22]"
+                            >
+                              {t.title}
+                            </AppLink>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </li>
+                );
+              }
+
               return (
                 <li key={item.href}>
                   <AppLink
@@ -219,7 +352,7 @@ export function SiteHeader() {
                     <span
                       className={[
                         "h-1.5 w-1.5 rounded-full transition-all duration-300",
-                        active ? "bg-[#C9A227] scale-100" : "scale-0",
+                        active ? "scale-100 bg-[#C9A227]" : "scale-0",
                       ].join(" ")}
                       aria-hidden
                     />
@@ -228,6 +361,15 @@ export function SiteHeader() {
                 </li>
               );
             })}
+            <li>
+              <AppLink
+                href="/#faq"
+                onClick={closeMenu}
+                className="flex items-center gap-2.5 border-b border-[#1A3D2E]/8 py-3.5 text-[13px] font-semibold tracking-[0.14em] text-[#1A1A1A] uppercase"
+              >
+                FAQ
+              </AppLink>
+            </li>
           </ul>
           <AppLink
             href="/#book"

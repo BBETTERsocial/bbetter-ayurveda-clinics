@@ -153,3 +153,64 @@ function stripTags(input: string) {
     .replace(/\s+/g, " ")
     .trim();
 }
+
+/**
+ * Pull the first image out of WP HTML so the treatment page can put
+ * image on one side and the following copy on the other (no empty gutter).
+ */
+export function splitFirstImage(html: string): {
+  beforeHtml: string;
+  imageSrc: string | null;
+  imageAlt: string;
+  afterHtml: string;
+} {
+  if (!html) {
+    return { beforeHtml: "", imageSrc: null, imageAlt: "", afterHtml: "" };
+  }
+
+  const imgMatch = html.match(/<img\b[^>]*>/i);
+  if (!imgMatch || imgMatch.index == null) {
+    return { beforeHtml: "", imageSrc: null, imageAlt: "", afterHtml: html };
+  }
+
+  const imgTag = imgMatch[0];
+  const imgIndex = imgMatch.index;
+  const src =
+    imgTag.match(/\bsrc=["']([^"']+)["']/i)?.[1]?.trim() ||
+    imgTag.match(/\bdata-src=["']([^"']+)["']/i)?.[1]?.trim() ||
+    null;
+  const imageAlt = imgTag.match(/\balt=["']([^"']*)["']/i)?.[1]?.trim() || "";
+
+  if (!src) {
+    return { beforeHtml: "", imageSrc: null, imageAlt: "", afterHtml: html };
+  }
+
+  // Prefer removing a tight wrapper that only holds this image
+  const wrappers = [
+    /<figure\b[^>]*>[\s\S]*?<\/figure>/i,
+    /<p\b[^>]*>\s*(?:<a\b[^>]*>\s*)?<img\b[^>]*(?:>[\s\S]*?<\/img>|\/>)(?:\s*<\/a>)?\s*<\/p>/i,
+    /<div\b[^>]*class="[^"]*elementor-widget-image[^"]*"[^>]*>[\s\S]*?<\/div>\s*<\/div>/i,
+    /<div\b[^>]*class="[^"]*(?:wp-block-image|alignnone|aligncenter|alignleft)[^"]*"[^>]*>[\s\S]*?<\/div>/i,
+  ];
+
+  for (const re of wrappers) {
+    const m = html.match(re);
+    if (!m || m.index == null) continue;
+    if (!m[0].includes(src) && !m[0].includes(imgTag.slice(0, 40))) continue;
+    // Must be the first image occurrence region
+    if (m.index > imgIndex + 80) continue;
+    return {
+      beforeHtml: html.slice(0, m.index).trim(),
+      imageSrc: src,
+      imageAlt,
+      afterHtml: html.slice(m.index + m[0].length).trim(),
+    };
+  }
+
+  return {
+    beforeHtml: html.slice(0, imgIndex).trim(),
+    imageSrc: src,
+    imageAlt,
+    afterHtml: html.slice(imgIndex + imgTag.length).trim(),
+  };
+}

@@ -12,15 +12,19 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { StickyActions } from "@/components/layout/StickyActions";
-import { getYtReviews } from "@/lib/wordpress";
+import { getTreatments, getYtReviews } from "@/lib/wordpress";
 
 export default async function Home() {
-  const reviews = await getYtReviews();
+  const [reviews, treatments] = await Promise.all([getYtReviews(), getTreatments()]);
+  const navTreatments = treatments.map((t) => ({
+    title: t.title,
+    slug: t.slug,
+  }));
 
   return (
     <>
       <SmoothScroll />
-      <SiteHeader />
+      <SiteHeader treatments={navTreatments} />
       <main>
         <HomeHero />
         <HomeStory />

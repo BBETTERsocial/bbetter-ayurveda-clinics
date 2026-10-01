@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArticleFaqs } from "@/components/content/ArticleFaqs";
 import { formatWpDate, type WpContentCard } from "@/lib/wordpress";
-import type { WpFaq } from "@/lib/wpContent";
+import { splitFirstImage, type WpFaq } from "@/lib/wpContent";
 
 export function ContentIndexHero({
   eyebrow,
@@ -32,10 +32,12 @@ export function ContentCardGrid({
   items,
   basePath,
   emptyLabel,
+  hideMeta = false,
 }: {
   items: WpContentCard[];
   basePath: "/blog" | "/treatments";
   emptyLabel: string;
+  hideMeta?: boolean;
 }) {
   if (!items.length) {
     return (
@@ -67,16 +69,23 @@ export function ContentCardGrid({
               )}
             </div>
             <div className="flex flex-1 flex-col p-5 sm:p-6">
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tracking-[0.08em] text-[#0B1F18]/45 uppercase">
-                {item.date ? <span>{formatWpDate(item.date)}</span> : null}
-                {item.readingMinutes ? (
-                  <>
-                    <span aria-hidden>·</span>
-                    <span>{item.readingMinutes} min read</span>
-                  </>
-                ) : null}
-              </div>
-              <h2 className="font-display mt-2 text-[1.2rem] leading-snug font-semibold text-[#0B1F18] transition-colors group-hover:text-[#006B56]">
+              {!hideMeta && (item.date || item.readingMinutes) ? (
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tracking-[0.08em] text-[#0B1F18]/45 uppercase">
+                  {item.date ? <span>{formatWpDate(item.date)}</span> : null}
+                  {item.readingMinutes ? (
+                    <>
+                      <span aria-hidden>·</span>
+                      <span>{item.readingMinutes} min read</span>
+                    </>
+                  ) : null}
+                </div>
+              ) : null}
+              <h2
+                className={[
+                  "font-display text-[1.2rem] leading-snug font-semibold text-[#0B1F18] transition-colors group-hover:text-[#006B56]",
+                  hideMeta || !(item.date || item.readingMinutes) ? "mt-0" : "mt-2",
+                ].join(" ")}
+              >
                 {item.title}
               </h2>
               {item.excerpt ? (
@@ -85,13 +94,105 @@ export function ContentCardGrid({
                 </p>
               ) : null}
               <span className="mt-auto pt-4 text-[12px] font-semibold tracking-[0.12em] text-[#0B1F18] uppercase">
-                Read more <span aria-hidden>›</span>
+                {basePath === "/treatments" ? "View treatment" : "Read more"}{" "}
+                <span aria-hidden>›</span>
               </span>
             </div>
           </Link>
         </li>
       ))}
     </ul>
+  );
+}
+
+/** Treatment detail — normal page flow, neat side image (not sticky). */
+export function TreatmentPage({
+  title,
+  image,
+  contentHtml,
+  faqs = [],
+}: {
+  title: string;
+  image?: string | null;
+  contentHtml: string;
+  faqs?: WpFaq[];
+}) {
+  const split = splitFirstImage(contentHtml);
+  const sideSrc = split.imageSrc || image || null;
+  const sideAlt = split.imageAlt || "";
+  const beforeHtml = split.imageSrc ? split.beforeHtml : "";
+  const afterHtml = split.imageSrc ? split.afterHtml : contentHtml;
+
+  return (
+    <article className="treatment-page pb-16 sm:pb-20 lg:pb-24">
+      <div className="mx-auto max-w-5xl px-5 pt-8 sm:px-8 sm:pt-12 lg:px-10">
+        <Link
+          href="/treatments"
+          className="inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.14em] text-[#0B1F18]/55 uppercase transition-colors hover:text-[#006B56]"
+        >
+          <span aria-hidden>←</span> All treatments
+        </Link>
+
+        <header className="mt-6 sm:mt-8">
+          <p className="text-[11px] font-semibold tracking-[0.28em] text-[#B5985A] uppercase">
+            Treatment
+          </p>
+          <h1 className="font-display mt-3 text-[1.85rem] leading-[1.12] font-semibold tracking-tight text-[#0B2A22] sm:text-[2.25rem] lg:text-[2.55rem]">
+            {title}
+          </h1>
+        </header>
+
+        {beforeHtml ? (
+          <div
+            className="wp-prose treatment-page__lead mt-6 sm:mt-8"
+            dangerouslySetInnerHTML={{ __html: beforeHtml }}
+          />
+        ) : null}
+
+        <div
+          className={`wp-prose treatment-page__body ${beforeHtml ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10"}`}
+        >
+          {sideSrc ? (
+            <div className="treatment-page__media">
+              <Image
+                src={sideSrc}
+                alt={sideAlt}
+                fill
+                priority
+                sizes="(max-width: 768px) 70vw, 220px"
+                className="object-cover"
+              />
+            </div>
+          ) : null}
+          {afterHtml ? (
+            <div
+              className="treatment-page__flow"
+              dangerouslySetInnerHTML={{ __html: afterHtml }}
+            />
+          ) : null}
+        </div>
+
+        <ArticleFaqs faqs={faqs} />
+
+        <div className="mt-12 flex flex-wrap items-center gap-4 sm:mt-14">
+          <Link
+            href="/#book"
+            className="btn-press inline-flex h-11 items-center gap-2 rounded-full bg-[#0B1F18] pl-5 pr-2 text-[10px] font-bold tracking-[0.12em] text-[#EBE8E2] uppercase hover:bg-[#1A3D2E]"
+          >
+            Book a consultation
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/12">
+              →
+            </span>
+          </Link>
+          <Link
+            href="/treatments"
+            className="text-[13px] font-semibold text-[#0B1F18]/60 underline decoration-[#0B1F18]/20 underline-offset-4 hover:text-[#006B56]"
+          >
+            All treatments
+          </Link>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -106,6 +207,9 @@ export function ContentArticle({
   backLabel,
   ctaHref = "/#book",
   ctaLabel = "Book a consultation",
+  treatments = [],
+  recentPosts = [],
+  currentSlug,
 }: {
   title: string;
   date?: string;
@@ -117,23 +221,25 @@ export function ContentArticle({
   backLabel: string;
   ctaHref?: string;
   ctaLabel?: string;
+  treatments?: { title: string; slug: string }[];
+  recentPosts?: { title: string; slug: string; date?: string }[];
+  currentSlug?: string;
 }) {
-  // Keep WP body order (text/images as authored). Skip hero if body already has media —
-  // otherwise the same photo repeats above the article.
   const bodyHasImage = /<img\b/i.test(contentHtml);
   const showHero = Boolean(image) && !bodyHasImage;
+  const hasSidebars = treatments.length > 0 || recentPosts.length > 0;
 
-  return (
-    <article className="pb-16 sm:pb-20 lg:pb-24">
-      <div className="mx-auto max-w-3xl px-5 pt-8 sm:px-8 sm:pt-12">
-        <Link
-          href={backHref}
-          className="inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.14em] text-[#0B1F18]/55 uppercase transition-colors hover:text-[#006B56]"
-        >
-          <span aria-hidden>←</span> {backLabel}
-        </Link>
+  const articleBody = (
+    <>
+      <Link
+        href={backHref}
+        className="inline-flex items-center gap-1.5 text-[12px] font-semibold tracking-[0.14em] text-[#0B1F18]/55 uppercase transition-colors hover:text-[#006B56]"
+      >
+        <span aria-hidden>←</span> {backLabel}
+      </Link>
 
-        <header className="mt-6 sm:mt-8">
+      <header className="mt-6 sm:mt-8">
+        {(date || readingMinutes) && (
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tracking-[0.1em] text-[#B5985A] uppercase">
             {date ? <span>{formatWpDate(date)}</span> : null}
             {readingMinutes ? (
@@ -143,37 +249,33 @@ export function ContentArticle({
               </>
             ) : null}
           </div>
-          <h1 className="font-display mt-3 text-[2rem] leading-[1.12] font-semibold tracking-tight text-[#0B1F18] sm:text-[2.45rem] lg:text-[2.75rem]">
-            {title}
-          </h1>
-        </header>
-      </div>
+        )}
+        <h1 className="font-display mt-3 text-[2rem] leading-[1.12] font-semibold tracking-tight text-[#0B1F18] sm:text-[2.45rem] lg:text-[2.55rem]">
+          {title}
+        </h1>
+      </header>
 
       {showHero ? (
-        <div className="mx-auto mt-8 max-w-4xl px-5 sm:mt-10 sm:px-8">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-[1.25rem] bg-[#1A3D2E]">
-            <Image
-              src={image!}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 896px) 100vw, 896px"
-              className="object-cover"
-            />
-          </div>
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-[1.15rem] bg-[#1A3D2E] sm:mt-10">
+          <Image
+            src={image!}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 640px"
+            className="object-cover"
+          />
         </div>
       ) : null}
 
       <div
-        className="wp-prose mx-auto mt-10 max-w-3xl px-5 sm:mt-12 sm:px-8"
+        className="wp-prose mt-8 sm:mt-10"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
 
-      <div className="mx-auto max-w-3xl px-5 sm:px-8">
-        <ArticleFaqs faqs={faqs} />
-      </div>
+      <ArticleFaqs faqs={faqs} />
 
-      <div className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center gap-4 px-5 sm:mt-14 sm:px-8">
+      <div className="mt-12 flex flex-wrap items-center gap-4 sm:mt-14">
         <Link
           href={ctaHref}
           className="btn-press inline-flex h-11 items-center gap-2 rounded-full bg-[#0B1F18] pl-5 pr-2 text-[10px] font-bold tracking-[0.12em] text-[#EBE8E2] uppercase hover:bg-[#1A3D2E]"
@@ -189,6 +291,62 @@ export function ContentArticle({
         >
           {backLabel}
         </Link>
+      </div>
+    </>
+  );
+
+  if (!hasSidebars) {
+    return (
+      <article className="pb-16 sm:pb-20 lg:pb-24">
+        <div className="mx-auto max-w-3xl px-5 pt-8 sm:px-8 sm:pt-12">{articleBody}</div>
+      </article>
+    );
+  }
+
+  return (
+    <article className="pb-16 sm:pb-20 lg:pb-24">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 pt-8 sm:px-8 sm:pt-12 lg:grid-cols-[13.5rem_minmax(0,1fr)_13.5rem] lg:gap-8 lg:px-10 xl:max-w-[88rem] xl:grid-cols-[15rem_minmax(0,1fr)_15rem] xl:gap-10">
+        <aside className="blog-aside order-2 lg:order-1 lg:pt-2">
+          <p className="text-[10px] font-bold tracking-[0.2em] text-[#B5985A] uppercase">
+            Treatments
+          </p>
+          <ul className="blog-aside__list mt-3">
+            {treatments.map((t) => (
+              <li key={t.slug}>
+                <Link
+                  href={`/treatments/${encodeURIComponent(t.slug)}`}
+                  className="blog-aside__link"
+                >
+                  {t.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        <div className="order-1 min-w-0 lg:order-2">{articleBody}</div>
+
+        <aside className="blog-aside order-3 lg:pt-2">
+          <p className="text-[10px] font-bold tracking-[0.2em] text-[#B5985A] uppercase">
+            Recent blogs
+          </p>
+          <ul className="blog-aside__list mt-3">
+            {recentPosts.map((p) => {
+              const active = p.slug === currentSlug;
+              return (
+                <li key={p.slug}>
+                  <Link
+                    href={`/blog/${encodeURIComponent(p.slug)}`}
+                    className={["blog-aside__link", active ? "is-active" : ""].join(" ")}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {p.title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
       </div>
     </article>
   );

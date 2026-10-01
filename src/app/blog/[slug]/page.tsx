@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ContentArticle } from "@/components/content/ContentViews";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { siteUrl } from "@/lib/seo";
-import { getPostBySlug, getPosts } from "@/lib/wordpress";
+import { getPostBySlug, getPosts, getTreatments } from "@/lib/wordpress";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -44,7 +44,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const [post, treatments, posts] = await Promise.all([
+    getPostBySlug(slug),
+    getTreatments(),
+    getPosts(),
+  ]);
   if (!post) notFound();
 
   return (
@@ -61,6 +65,16 @@ export default async function BlogPostPage({ params }: Props) {
             faqs={post.faqs}
             backHref="/blog"
             backLabel="All articles"
+            currentSlug={post.slug}
+            treatments={treatments.map((t) => ({
+              title: t.title,
+              slug: t.slug,
+            }))}
+            recentPosts={posts.slice(0, 8).map((p) => ({
+              title: p.title,
+              slug: p.slug,
+              date: p.date,
+            }))}
           />
         </div>
       </section>

@@ -22,6 +22,7 @@ export default async function TreatmentsIndexPage() {
           <ContentCardGrid
             items={treatments}
             basePath="/treatments"
+            hideMeta
             emptyLabel="Treatment pages will appear here once published in WordPress."
           />
         </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContentArticle } from "@/components/content/ContentViews";
+import { TreatmentPage } from "@/components/content/ContentViews";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { siteUrl } from "@/lib/seo";
 import { getTreatmentBySlug, getTreatments } from "@/lib/wordpress";
@@ -52,17 +52,11 @@ export default async function TreatmentDetailPage({ params }: Props) {
       <section className="content-article relative isolate bg-[#F7F1E6]">
         <div className="content-index__lines absolute inset-0" aria-hidden />
         <div className="relative z-[1]">
-          <ContentArticle
+          <TreatmentPage
             title={treatment.title}
-            date={treatment.date}
-            readingMinutes={treatment.readingMinutes}
             image={treatment.image}
             contentHtml={treatment.contentHtml}
             faqs={treatment.faqs}
-            backHref="/treatments"
-            backLabel="All treatments"
-            ctaHref="/#book"
-            ctaLabel="Book a consultation"
           />
         </div>
       </section>
