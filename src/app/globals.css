@@ -760,12 +760,11 @@ html[data-intro="done"] .site-nav-chrome {
   .hero-mic.is-ready.is-leaving .hero-mic__credit.is-in,
   .hero-mic.is-ready.is-leaving .hero-mic__botanicals.is-in {
     transition: none;
-    animation: none;
     opacity: calc(1 - var(--hero-p) * 1.35);
     transform: translate3d(0, calc(var(--hero-p) * -12px), 0);
   }
   .hero-mic.is-ready.is-leaving .hero-mic__notes.is-in .hero-mic__anno {
-    animation: none;
+    /* Keep settled pose — never re-trigger entrance by clearing animation */
     opacity: 1;
     transform: none;
   }
@@ -978,14 +977,19 @@ html[data-intro="done"] .site-nav-chrome {
   opacity: 0;
   transform: translate3d(0, 18px, 0);
 }
-.hero-mic__notes.is-in .hero-mic__anno {
+.hero-mic__notes.is-in:not(.is-settled) .hero-mic__anno {
   animation: hero-anno-in 2.2s var(--ease-out-soft) forwards;
 }
-.hero-mic__notes.is-in .hero-mic__anno--tl {
+.hero-mic__notes.is-in:not(.is-settled) .hero-mic__anno--tl {
   animation-delay: 0.15s;
 }
-.hero-mic__notes.is-in .hero-mic__anno--tr {
+.hero-mic__notes.is-in:not(.is-settled) .hero-mic__anno--tr {
   animation-delay: 0.55s;
+}
+.hero-mic__notes.is-settled .hero-mic__anno {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
 }
 .hero-mic__anno {
   position: absolute;
@@ -1497,11 +1501,16 @@ html[data-intro="done"] .site-nav-chrome {
     opacity: 0;
     transform: translate3d(0, 18px, 0);
   }
-  .hero-mic__notes.is-in .hero-mic__anno--tl {
+  .hero-mic__notes.is-in:not(.is-settled) .hero-mic__anno--tl {
     animation: hero-anno-in 2.4s var(--ease-out-soft) 0.2s forwards;
   }
-  .hero-mic__notes.is-in .hero-mic__anno--tr {
+  .hero-mic__notes.is-in:not(.is-settled) .hero-mic__anno--tr {
     animation: hero-anno-in 2.4s var(--ease-out-soft) 0.65s forwards;
+  }
+  .hero-mic__notes.is-settled .hero-mic__anno {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
   }
   .hero-mic__anno {
     position: absolute;

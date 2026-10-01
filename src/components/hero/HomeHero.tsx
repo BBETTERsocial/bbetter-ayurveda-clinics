@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from "react";
 
 type Phase = "loader" | "dock" | "zoom" | "mark" | "settle" | "text" | "done";
 
+/** Survive Strict Mode remount so flank notes don't entrance-animate twice. */
+let heroNotesPlayed = false;
+
 const SIDE_LABELS = [
   {
     n: "01",
@@ -46,6 +49,7 @@ export function HomeHero() {
   const dockRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>("loader");
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [notesSettled, setNotesSettled] = useState(heroNotesPlayed);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -130,7 +134,7 @@ export function HomeHero() {
       const range = Math.max(window.innerHeight * 0.7, el.offsetHeight * 0.65);
       const p = Math.min(1, Math.max(0, -rect.top / range));
       el.style.setProperty("--hero-p", p.toFixed(4));
-      el.classList.toggle("is-leaving", p > 0.002);
+      el.classList.toggle("is-leaving", p > 0.02);
     };
 
     let frame = 0;
@@ -159,6 +163,21 @@ export function HomeHero() {
   const showMeta = ["text", "done"].includes(phase) || reduceMotion;
   const showNotes = phase === "done" || reduceMotion;
   const loaderLeaving = phase === "dock";
+
+  /* Flank labels (Vata / Dinacharya): play entrance once, then stay settled */
+  useEffect(() => {
+    if (!showNotes) return;
+    if (reduceMotion || heroNotesPlayed) {
+      heroNotesPlayed = true;
+      setNotesSettled(true);
+      return;
+    }
+    const t = window.setTimeout(() => {
+      heroNotesPlayed = true;
+      setNotesSettled(true);
+    }, 3400);
+    return () => window.clearTimeout(t);
+  }, [showNotes, reduceMotion]);
 
   return (
     <section
@@ -279,6 +298,7 @@ export function HomeHero() {
             className={[
               "hero-mic__notes",
               showNotes ? "is-in" : "is-out",
+              notesSettled ? "is-settled" : "",
             ].join(" ")}
             aria-hidden
           >
