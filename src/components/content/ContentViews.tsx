@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArticleFaqs } from "@/components/content/ArticleFaqs";
+import { TreatmentBody } from "@/components/content/TreatmentBody";
 import { formatWpDate, type WpContentCard } from "@/lib/wordpress";
 import { splitFirstImage, type WpFaq } from "@/lib/wpContent";
 
@@ -105,7 +106,7 @@ export function ContentCardGrid({
   );
 }
 
-/** Treatment detail — normal page flow, neat side image (not sticky). */
+/** Treatment detail — image sized naturally; text wraps by image fit. */
 export function TreatmentPage({
   title,
   image,
@@ -149,28 +150,14 @@ export function TreatmentPage({
           />
         ) : null}
 
-        <div
-          className={`wp-prose treatment-page__body ${beforeHtml ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10"}`}
-        >
-          {sideSrc ? (
-            <div className="treatment-page__media">
-              <Image
-                src={sideSrc}
-                alt={sideAlt}
-                fill
-                priority
-                sizes="(max-width: 768px) 70vw, 220px"
-                className="object-cover"
-              />
-            </div>
-          ) : null}
-          {afterHtml ? (
-            <div
-              className="treatment-page__flow"
-              dangerouslySetInnerHTML={{ __html: afterHtml }}
-            />
-          ) : null}
-        </div>
+        <TreatmentBody
+          imageSrc={sideSrc}
+          imageAlt={sideAlt}
+          imageWidth={split.imageWidth}
+          imageHeight={split.imageHeight}
+          afterHtml={afterHtml}
+          className={beforeHtml ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10"}
+        />
 
         <ArticleFaqs faqs={faqs} />
 

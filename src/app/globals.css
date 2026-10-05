@@ -3811,15 +3811,19 @@ textarea:focus-visible {
   border-radius: 0.9rem;
 }
 
-/* Treatment pages: normal page flow — compact image beside early copy, then full width */
+/* Treatment pages: image keeps natural ratio; text wraps by fit size */
 .treatment-page__media {
   position: relative;
-  width: min(100%, 220px);
-  aspect-ratio: 4 / 5;
+  width: min(100%, 240px);
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 1rem;
-  background: #1a3d2e;
+  background: rgba(26, 61, 46, 0.06);
   margin: 0 0 1.25rem;
+}
+
+.treatment-page__media img {
+  object-fit: contain !important;
 }
 
 .treatment-page__flow {
@@ -3828,7 +3832,7 @@ textarea:focus-visible {
 
 .treatment-page .treatment-page__body img,
 .treatment-page .treatment-page__body figure {
-  max-width: min(100%, 260px);
+  max-width: min(100%, 320px);
 }
 
 .treatment-page .treatment-page__body img {
@@ -3838,11 +3842,45 @@ textarea:focus-visible {
   border-radius: 0.9rem;
 }
 
+/* Small portrait → narrow side, more text beside */
+.treatment-page__body.is-fit-sm .treatment-page__media {
+  width: min(100%, 168px);
+}
+
+/* Square / mid → balanced */
+.treatment-page__body.is-fit-md .treatment-page__media {
+  width: min(100%, 240px);
+}
+
+/* Larger side image → less text beside */
+.treatment-page__body.is-fit-lg .treatment-page__media {
+  width: min(100%, 340px);
+}
+
+/* Wide / full → image on its own row, text below */
+.treatment-page__body.is-fit-full .treatment-page__media {
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 1.5rem;
+}
+
 @media (min-width: 768px) {
-  .treatment-page__media {
+  .treatment-page__body:not(.is-fit-full) .treatment-page__media {
     float: left;
-    width: 220px;
     margin: 0.15rem 1.75rem 1.1rem 0;
+  }
+
+  .treatment-page__body.is-fit-sm .treatment-page__media {
+    width: 168px;
+  }
+
+  .treatment-page__body.is-fit-md .treatment-page__media {
+    width: 248px;
+  }
+
+  .treatment-page__body.is-fit-lg .treatment-page__media {
+    width: 360px;
   }
 
   .treatment-page__body::after {
@@ -3851,8 +3889,25 @@ textarea:focus-visible {
     clear: both;
   }
 
-  /* Later sections go full width under the image */
-  .treatment-page__body h2:not(:nth-of-type(1)) {
+  /* Small: only later h2s clear — more copy wraps beside */
+  .treatment-page__body.is-fit-sm h2:not(:nth-of-type(1)):not(:nth-of-type(2)) {
+    clear: both;
+  }
+
+  /* Medium: second heading goes full width */
+  .treatment-page__body.is-fit-md h2:not(:nth-of-type(1)) {
+    clear: both;
+  }
+
+  /* Large: first heading + following section drop under image sooner */
+  .treatment-page__body.is-fit-lg h2 {
+    clear: both;
+  }
+
+  .treatment-page__body.is-fit-full h2,
+  .treatment-page__body.is-fit-full p,
+  .treatment-page__body.is-fit-full ul,
+  .treatment-page__body.is-fit-full ol {
     clear: both;
   }
 }

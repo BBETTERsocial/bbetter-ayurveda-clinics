@@ -162,15 +162,31 @@ export function splitFirstImage(html: string): {
   beforeHtml: string;
   imageSrc: string | null;
   imageAlt: string;
+  imageWidth: number | null;
+  imageHeight: number | null;
   afterHtml: string;
 } {
   if (!html) {
-    return { beforeHtml: "", imageSrc: null, imageAlt: "", afterHtml: "" };
+    return {
+      beforeHtml: "",
+      imageSrc: null,
+      imageAlt: "",
+      imageWidth: null,
+      imageHeight: null,
+      afterHtml: "",
+    };
   }
 
   const imgMatch = html.match(/<img\b[^>]*>/i);
   if (!imgMatch || imgMatch.index == null) {
-    return { beforeHtml: "", imageSrc: null, imageAlt: "", afterHtml: html };
+    return {
+      beforeHtml: "",
+      imageSrc: null,
+      imageAlt: "",
+      imageWidth: null,
+      imageHeight: null,
+      afterHtml: html,
+    };
   }
 
   const imgTag = imgMatch[0];
@@ -180,9 +196,20 @@ export function splitFirstImage(html: string): {
     imgTag.match(/\bdata-src=["']([^"']+)["']/i)?.[1]?.trim() ||
     null;
   const imageAlt = imgTag.match(/\balt=["']([^"']*)["']/i)?.[1]?.trim() || "";
+  const widthAttr = Number(imgTag.match(/\bwidth=["']?(\d+)/i)?.[1] || 0);
+  const heightAttr = Number(imgTag.match(/\bheight=["']?(\d+)/i)?.[1] || 0);
+  const imageWidth = widthAttr > 0 ? widthAttr : null;
+  const imageHeight = heightAttr > 0 ? heightAttr : null;
 
   if (!src) {
-    return { beforeHtml: "", imageSrc: null, imageAlt: "", afterHtml: html };
+    return {
+      beforeHtml: "",
+      imageSrc: null,
+      imageAlt: "",
+      imageWidth: null,
+      imageHeight: null,
+      afterHtml: html,
+    };
   }
 
   // Prefer removing a tight wrapper that only holds this image
@@ -203,6 +230,8 @@ export function splitFirstImage(html: string): {
       beforeHtml: html.slice(0, m.index).trim(),
       imageSrc: src,
       imageAlt,
+      imageWidth,
+      imageHeight,
       afterHtml: html.slice(m.index + m[0].length).trim(),
     };
   }
@@ -211,6 +240,27 @@ export function splitFirstImage(html: string): {
     beforeHtml: html.slice(0, imgIndex).trim(),
     imageSrc: src,
     imageAlt,
+    imageWidth,
+    imageHeight,
     afterHtml: html.slice(imgIndex + imgTag.length).trim(),
   };
+}
+
+/** Classify image for treatment layout: small → more text beside; full → text below. */
+export function classifyTreatmentImageFit(
+  width: number,
+  height: number
+): "sm" | "md" | "lg" | "full" {
+  const w = Math.max(1, width);
+  const h = Math.max(1, height);
+  const ratio = w / h;
+
+  // Wide / banner → full bleed, text underneath
+  if (ratio >= 1.35) return "full";
+  // Mild landscape → larger side image, less text beside
+  if (ratio >= 1.05) return "lg";
+  // Square-ish
+  if (ratio >= 0.78) return "md";
+  // Tall portrait → compact side, more text wraps
+  return "sm";
 }
