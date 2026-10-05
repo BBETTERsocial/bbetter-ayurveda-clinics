@@ -3813,29 +3813,31 @@ textarea:focus-visible {
 
 /* Treatment pages: image keeps natural ratio; text wraps by fit size */
 .treatment-page__media {
-  position: relative;
   width: min(100%, 240px);
-  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 1rem;
-  background: rgba(26, 61, 46, 0.06);
   margin: 0 0 1.25rem;
 }
 
-.treatment-page__media img {
-  object-fit: contain !important;
+.treatment-page .treatment-page__media .treatment-page__image {
+  display: block;
+  width: 100% !important;
+  max-width: none;
+  height: auto !important;
+  margin: 0;
+  object-fit: contain;
 }
 
 .treatment-page__flow {
   display: contents;
 }
 
-.treatment-page .treatment-page__body img,
+.treatment-page .treatment-page__body img:not(.treatment-page__image),
 .treatment-page .treatment-page__body figure {
   max-width: min(100%, 320px);
 }
 
-.treatment-page .treatment-page__body img {
+.treatment-page .treatment-page__body img:not(.treatment-page__image) {
   width: auto;
   height: auto;
   margin: 0.75em 0 1.25em;
@@ -3863,6 +3865,10 @@ textarea:focus-visible {
   width: 100%;
   max-width: 100%;
   margin: 0 0 1.5rem;
+}
+
+.treatment-page__body.is-fit-full .treatment-page__media .treatment-page__image {
+  width: 100% !important;
 }
 
 @media (min-width: 768px) {

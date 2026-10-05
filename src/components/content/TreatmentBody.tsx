@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { classifyTreatmentImageFit } from "@/lib/wpContent";
 
 type Fit = "sm" | "md" | "lg" | "full";
@@ -25,36 +25,11 @@ export function TreatmentBody({
     imageWidth && imageHeight
       ? classifyTreatmentImageFit(imageWidth, imageHeight)
       : null;
-  const hintRatio =
-    imageWidth && imageHeight && imageHeight > 0
-      ? imageWidth / imageHeight
-      : null;
-
   const [fit, setFit] = useState<Fit>(hintFit || "md");
-  const [ratio, setRatio] = useState<number | null>(hintRatio);
-
-  useEffect(() => {
-    if (!imageSrc) return;
-
-    let cancelled = false;
-    const img = new window.Image();
-    img.onload = () => {
-      if (cancelled) return;
-      const w = img.naturalWidth || imageWidth || 1;
-      const h = img.naturalHeight || imageHeight || 1;
-      setRatio(w / h);
-      setFit(classifyTreatmentImageFit(w, h));
-    };
-    img.onerror = () => {
-      if (cancelled) return;
-      setFit(hintFit || "md");
-    };
-    img.src = imageSrc;
-
-    return () => {
-      cancelled = true;
-    };
-  }, [imageSrc, imageWidth, imageHeight, hintFit]);
+  const [dimensions, setDimensions] = useState({
+    width: imageWidth || 900,
+    height: imageHeight || 600,
+  });
 
   if (!imageSrc) {
     return afterHtml ? (
@@ -70,14 +45,12 @@ export function TreatmentBody({
       className={`wp-prose treatment-page__body is-fit-${fit} ${className}`.trim()}
       data-fit={fit}
     >
-      <div
-        className="treatment-page__media"
-        style={ratio ? { aspectRatio: String(ratio) } : undefined}
-      >
+      <div className="treatment-page__media">
         <Image
           src={imageSrc}
           alt={imageAlt || ""}
-          fill
+          width={dimensions.width}
+          height={dimensions.height}
           priority
           sizes={
             fit === "full"
@@ -88,7 +61,19 @@ export function TreatmentBody({
                   ? "(max-width: 768px) 55vw, 180px"
                   : "(max-width: 768px) 70vw, 260px"
           }
-          className="object-contain"
+          className="treatment-page__image"
+          onLoad={(event) => {
+            const width = event.currentTarget.naturalWidth;
+            const height = event.currentTarget.naturalHeight;
+            if (!width || !height) return;
+
+            setDimensions((current) =>
+              current.width === width && current.height === height
+                ? current
+                : { width, height }
+            );
+            setFit(classifyTreatmentImageFit(width, height));
+          }}
         />
       </div>
       {afterHtml ? (
