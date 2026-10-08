@@ -4,7 +4,7 @@ import { FormEvent, useState, type ReactNode } from "react";
 import { FadeUp } from "@/components/ui/FadeUp";
 import { site } from "@/lib/site";
 
-type Status = "idle" | "sent";
+type Status = "idle" | "loading" | "sent" | "error";
 
 function IconUser() {
   return (
@@ -130,30 +130,50 @@ function FieldShell({
 
 export function HomeBooking() {
   const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const name = String(data.get("name") || "").trim();
-    const mobile = String(data.get("mobile") || "").trim();
-    const location = String(data.get("location") || "").trim();
-    const problem = String(data.get("problem") || "").trim();
-    const date = String(data.get("date") || "").trim();
-    const message = String(data.get("message") || "").trim();
+    setError("");
+    setStatus("loading");
 
-    const lines = [
-      `Booking request — ${site.name}`,
-      `Name: ${name}`,
-      `Mobile: ${mobile}`,
-      `Clinic: ${location}`,
-      `Problem: ${problem}`,
-      date ? `Estimated date: ${date}` : null,
-      message ? `Message: ${message}` : null,
-    ].filter(Boolean);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") || "").trim(),
+      mobile: String(data.get("mobile") || "").trim(),
+      location: String(data.get("location") || "").trim(),
+      problem: String(data.get("problem") || "").trim(),
+      date: String(data.get("date") || "").trim(),
+      message: String(data.get("message") || "").trim(),
+    };
 
-    const href = `${site.whatsappHref}?text=${encodeURIComponent(lines.join("\n"))}`;
-    window.open(href, "_blank", "noopener,noreferrer");
-    setStatus("sent");
+    if (!payload.name || !payload.mobile || !payload.problem || !payload.date) {
+      setStatus("error");
+      setError("Name, mobile number, problem, and appointment date are required.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = (await res.json()) as { ok?: boolean; error?: string };
+
+      if (!res.ok || !json.ok) {
+        setStatus("error");
+        setError(json.error || "Could not submit booking. Try again.");
+        return;
+      }
+
+      form.reset();
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+      setError("Could not submit booking. Check your connection and try again.");
+    }
   }
 
   return (
@@ -233,11 +253,7 @@ export function HomeBooking() {
         </FadeUp>
 
         <FadeUp delay={90} variant="right">
-          <form
-            onSubmit={onSubmit}
-            className="book-mic__card"
-            noValidate
-          >
+          <form onSubmit={onSubmit} className="book-mic__card">
             <div className="space-y-3.5">
               <div>
                 <label htmlFor="book-name" className="book-mic__label">
@@ -275,30 +291,6 @@ export function HomeBooking() {
               </div>
 
               <div>
-                <label htmlFor="book-location" className="book-mic__label">
-                  Location <span>(required)</span>
-                </label>
-                <FieldShell icon={<IconPin />}>
-                  <select
-                    id="book-location"
-                    name="location"
-                    required
-                    defaultValue=""
-                    className="book-mic__input book-mic__select"
-                  >
-                    <option value="" disabled>
-                      Select your preferred clinic
-                    </option>
-                    {site.locations.map((loc) => (
-                      <option key={loc.name} value={loc.name}>
-                        {loc.name}
-                      </option>
-                    ))}
-                  </select>
-                </FieldShell>
-              </div>
-
-              <div>
                 <label htmlFor="book-problem" className="book-mic__label">
                   Problems <span>(required)</span>
                 </label>
@@ -324,21 +316,43 @@ export function HomeBooking() {
 
               <div>
                 <label htmlFor="book-date" className="book-mic__label">
-                  Estimated Appointment Date
+                  Estimated Appointment Date <span>(required)</span>
                 </label>
                 <FieldShell icon={<IconCal />}>
                   <input
                     id="book-date"
                     name="date"
                     type="date"
+                    required
                     className="book-mic__input"
                   />
                 </FieldShell>
               </div>
 
               <div>
+                <label htmlFor="book-location" className="book-mic__label">
+                  Location <span>(optional)</span>
+                </label>
+                <FieldShell icon={<IconPin />}>
+                  <select
+                    id="book-location"
+                    name="location"
+                    defaultValue=""
+                    className="book-mic__input book-mic__select"
+                  >
+                    <option value="">Select clinic (optional)</option>
+                    {site.locations.map((loc) => (
+                      <option key={loc.name} value={loc.name}>
+                        {loc.name}
+                      </option>
+                    ))}
+                  </select>
+                </FieldShell>
+              </div>
+
+              <div>
                 <label htmlFor="book-message" className="book-mic__label">
-                  Message
+                  Message <span>(optional)</span>
                 </label>
                 <FieldShell icon={<IconChat />}>
                   <textarea
@@ -352,8 +366,12 @@ export function HomeBooking() {
               </div>
             </div>
 
-            <button type="submit" className="book-mic__submit btn-press">
-              Book Appointment
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="book-mic__submit btn-press disabled:opacity-60"
+            >
+              {status === "loading" ? "Submitting…" : "Book Appointment"}
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
                 <path
                   d="M3 8h10M9 4l4 4-4 4"
@@ -372,7 +390,13 @@ export function HomeBooking() {
 
             {status === "sent" ? (
               <p className="mt-3 text-center text-sm text-[#1A3D2E]" role="status">
-                Opening WhatsApp with your booking details…
+                Thanks — your booking request was received. We’ll contact you shortly.
+              </p>
+            ) : null}
+
+            {status === "error" && error ? (
+              <p className="mt-3 text-center text-sm text-[#8B2E2E]" role="alert">
+                {error}
               </p>
             ) : null}
           </form>
