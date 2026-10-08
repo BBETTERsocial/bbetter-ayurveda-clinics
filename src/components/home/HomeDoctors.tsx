@@ -34,8 +34,8 @@ function DoctorCard({
 
       <div className="doctors-mic__body">
         <div className="doctors-mic__copy">
-          <p className="doctors-mic__cred">{doc.credential}</p>
           <h3 className="font-display doctors-mic__name">{doc.name}</h3>
+          <p className="doctors-mic__cred">{doc.credential}</p>
           <div className="doctors-mic__rule" aria-hidden />
           <dl className="doctors-mic__meta">
             <div>

@@ -2324,22 +2324,22 @@ textarea:focus-visible {
   flex-direction: column;
 }
 
-.doctors-mic__cred {
-  margin: 0;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #b5985a;
-}
-
 .doctors-mic__name {
-  margin: 0.4rem 0 0;
+  margin: 0;
   font-size: 1.35rem;
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.02em;
   color: #0b2a22;
+}
+
+.doctors-mic__cred {
+  margin: 0.4rem 0 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b5985a;
 }
 
 @media (min-width: 1024px) {
