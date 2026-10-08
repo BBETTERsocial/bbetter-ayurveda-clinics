@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Caveat, Fraunces, Outfit } from "next/font/google";
+import Script from "next/script";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { pageMetadata, seo, siteUrl } from "@/lib/seo";
 import { site } from "@/lib/site";
 import "./globals.css";
+
+const GTM_ID = "GTM-P3SDBQ9V";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -99,7 +102,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-intro="loading"
       className={`${fraunces.variable} ${outfit.variable} ${caveat.variable} h-full antialiased`}
     >
+      {/* Google Tag Manager — injected at start of <head> */}
+      <Script id="gtm-head" strategy="beforeInteractive">{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`}</Script>
       <body className="flex min-h-full flex-col bg-[#F7F1E6] font-sans text-black">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <JsonLd data={localBusinessLd} />
         {children}
       </body>
