@@ -3,29 +3,29 @@ import type { Metadata } from "next";
 /** SEO copied from https://bbetterayurvedaclinics.com/ (Yoast). */
 export const siteUrl = "https://bbetterayurvedaclinics.com";
 
+/** Default social / Open Graph share image (1200×630 style). */
+export const defaultOgImage = `${siteUrl}/images/brand/og-share.jpg`;
+
 export const seo = {
   home: {
     title: "best ayurveda clinic in hyderabad | Trusted Doctors & Holistic Care Center",
     description:
       "Looking for the best ayurveda clinic in Hyderabad? Get expert treatments, personalised therapies, and natural healing plans for lasting wellness today.",
-    ogImage:
-      "https://bbetterayurvedaclinics.com/wp-content/uploads/2026/06/Clinic-Home-header.jpg",
+    ogImage: defaultOgImage,
     path: "/",
   },
   about: {
     title: "best ayurveda clinic in kukatpally | Expert Care & Natural Healing Hub",
     description:
       "Searching for the best ayurveda clinic in kukatpally? Experience trusted doctors, authentic therapies, and personalized wellness care for lasting relief.",
-    ogImage:
-      "https://bbetterayurvedaclinics.com/wp-content/uploads/2026/02/group-people-working-out-business-plan-office-scaled.jpg",
+    ogImage: defaultOgImage,
     path: "/about",
   },
   therapies: {
     title: "Therapies - BBETTER AYURVEDA CLINICS",
     description:
       "Panchakarma, Abhyanga, Shirodhara, Nasya, Kati Basti and herbal consultations at BBETTER Ayurveda clinics in Kukatpally and Nallagandla, Hyderabad.",
-    ogImage:
-      "https://bbetterayurvedaclinics.com/wp-content/uploads/2026/03/wmremove-transformed.png",
+    ogImage: defaultOgImage,
     path: "/therapies",
   },
   contact: {
@@ -33,20 +33,21 @@ export const seo = {
       "ayurvedic treatment for Ayurveda contact in kukatpally hyderabad - Contact Page",
     description:
       "ayurvedic treatment for Ayurveda contact in kukatpally hyderabad. Reach our clinic, book appointments, and get guidance from expert doctors today.",
-    ogImage:
-      "https://bbetterayurvedaclinics.com/wp-content/uploads/2026/02/leaf-icon-1.png",
+    ogImage: defaultOgImage,
     path: "/contact",
   },
   treatments: {
     title: "Ayurveda Treatments & Care Programs | BBETTER Ayurveda",
     description:
       "Ayurvedic treatments for arthritis, knee pain, joint pain, back pain, sciatica, migraine, psoriasis and more at BBETTER clinics in Hyderabad.",
+    ogImage: defaultOgImage,
     path: "/treatments",
   },
   blog: {
     title: "Blog - BBETTER AYURVEDA CLINICS",
     description:
       "Ayurveda insights, patient stories, and wellness guidance from BBETTER Ayurveda Clinics in Hyderabad.",
+    ogImage: defaultOgImage,
     path: "/blog",
   },
 } as const;
