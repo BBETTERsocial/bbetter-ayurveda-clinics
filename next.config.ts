@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "cms.bbetterayurvedaclinics.com",
+        pathname: "/wp-content/uploads/**",
+      },
+      {
+        protocol: "https",
         hostname: "i.ytimg.com",
         pathname: "/**",
       },
