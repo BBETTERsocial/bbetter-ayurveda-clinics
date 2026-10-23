@@ -35,6 +35,11 @@ export const metadata: Metadata = {
     default: seo.home.title,
     template: "%s | BBETTER Ayurveda",
   },
+  icons: {
+    icon: [{ url: "/images/BB_logo.jpg", type: "image/jpeg" }],
+    shortcut: "/images/BB_logo.jpg",
+    apple: "/images/BB_logo.jpg",
+  },
   robots: {
     index: true,
     follow: true,
